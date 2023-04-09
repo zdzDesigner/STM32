@@ -1,0 +1,5 @@
+reset
+erase
+loadfile /home/zdz/Documents/Try/IOT/STM32/05_26/hcdz/test.bin 0x08000000
+r
+qc

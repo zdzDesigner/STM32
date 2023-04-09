@@ -1,0 +1,5 @@
+run
+*.o
+*.elf
+*.bin
+*.map
