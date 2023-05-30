@@ -6,7 +6,21 @@ int main() {
   *(unsigned int *)0x4001100C &= ~(1 << 13); // 配置输出低电平
   // *(unsigned int *)0x4001100C |= (1 << 13); // 配置输高电平
 
+  int count = 0;
+  int i = 0;
   while (1) {
+    count = 0;
+    if (i == 0) {
+      i++;
+      *(unsigned int *)0x4001100C &= ~(1 << 13); // 配置输出低电平
+    } else {
+      i--;
+      *(unsigned int *)0x4001100C |= (1 << 13); // 配置输高电平
+    }
+
+    while (count < 1000000) {
+      count++;
+    }
   }
 }
 
