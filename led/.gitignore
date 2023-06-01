@@ -3,3 +3,5 @@ run
 *.elf
 *.bin
 *.map
+build
+.xmake

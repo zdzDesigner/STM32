@@ -1,5 +1,6 @@
 ###################################### 文件
-TARGET=target
+# TARGET=target
+TARGET=output
 BUILD_DIR=build
 
 ###################################### 编译器

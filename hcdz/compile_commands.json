@@ -1,0 +1,11 @@
+[
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/hcdz",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-fvisibility=hidden", "-O3", "-Og", "-mcpu=cortex-m3", "-mthumb", "-x", "assembler-with-cpp", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/main/linux/x86_64/release/startup_stm32f103xb.s.o", "startup_stm32f103xb.s"],
+  "file": "startup_stm32f103xb.s"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/hcdz",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-fvisibility=hidden", "-O3", "-Og", "-mcpu=cortex-m3", "-mthumb", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-DNDEBUG", "-o", "build/.objs/main/linux/x86_64/release/main.c.o", "main.c"],
+  "file": "main.c"
+}]

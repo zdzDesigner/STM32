@@ -18,7 +18,7 @@ int main() {
       *(unsigned int *)0x4001100C |= (1 << 13); // 配置输高电平
     }
 
-    while (count < 1000000) {
+    while (count < 100000) {
       count++;
     }
   }

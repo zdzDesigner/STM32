@@ -1,5 +1,5 @@
 reset
 erase
-loadfile /home/zdz/Documents/Try/IOT/STM32/05_26/led/build/test.bin 0x08000000
+loadfile ./build/output.bin 0x08000000
 r
 qc

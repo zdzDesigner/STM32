@@ -1,4 +1,5 @@
-TARGET=test
+# TARGET=test
+TARGET=output
 BUILD_DIR = build
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
