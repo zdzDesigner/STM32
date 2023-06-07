@@ -208,7 +208,7 @@ int main() {
     ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
     ch5 = scaler.conv(&scaler, ch5);
     printf("--%d, %d\n", ch4, ch5);
-    printf("--\n");
+    // printf("--\n");
 
         // TIM_SetCompare1(TIM3, 0);
         /* TIM_SetCompare1(TIM3, val); */
