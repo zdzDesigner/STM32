@@ -33,6 +33,8 @@ BUILD_DIR = build
 # C_SOURCES =  $(shell find ./ ! -name "core_cm3.c" -name '*.c')
 C_SOURCES =  $(shell find ./ ! -name "core_cm3.c" ! -path "./.ccls-cache/*" -name '*.c')
  
+read:
+	$(C_SOURCES)
 # C_SOURCES =  \
 # src/main.c \
 # src/led/led.c \

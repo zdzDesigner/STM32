@@ -2,3 +2,5 @@ build/
 .vscode/
 .ccls-cache/
 .dep/
+.xmake
+.cache
