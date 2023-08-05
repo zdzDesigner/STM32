@@ -1,6 +1,0 @@
-reset
-erase
-loadfile /home/zdz/Documents/Try/IOT/STM32/05_26/project/build/target.bin 0x08000000
-r
-g
-qc
