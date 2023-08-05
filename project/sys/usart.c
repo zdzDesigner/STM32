@@ -1,4 +1,3 @@
-#include "sys.h"
 #include "usart.h"
 
 // static void USART_SendByte(USART_TypeDef* USARTx, uint16_t Data);

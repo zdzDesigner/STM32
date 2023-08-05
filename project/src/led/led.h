@@ -1,7 +1,7 @@
 #ifndef __LED_H__
 #define __LED_H__
-
-#include "sys.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
 
 #define LED_RCC RCC_APB2Periph_GPIOB
 #define LED_GPIO GPIOB

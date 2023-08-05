@@ -1,4 +1,7 @@
-#include "sys.h"
+#include "led.h"
+#include "delay.h"
+#include "usart.h"
+#include "pwm.h"
 
 int main()
 {
@@ -9,12 +12,8 @@ int main()
     PRINT_Config();
     LED_GPIO_Config();
 
-    // led
-    LED_Open();
+    ADC_Config();
+
     while (1) {
-        delay_ms(300);
-        LED_FLAG_Toggle();
     }
-
-
 }
