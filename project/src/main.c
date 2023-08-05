@@ -6,7 +6,8 @@
 // uint32_t count = 0;
 extern uint16_t ADC_VAL[2];
 
-int main() {
+int main()
+{
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 
     delay_init();
@@ -16,10 +17,8 @@ int main() {
     // WIFI_USART_Start();
     // WIFI_Esp8266();
 
-
     /* OLED_Init(); */
     /* OLED_Clear(); */
-
 
     // OLED_ShowCHinese(30, 0, 0);
     // OLED_ShowCHinese(48, 0, 1);
@@ -46,8 +45,6 @@ int main() {
     // }
     // return 0;
 
-
-
     // /*SPI 24l01初始化*/
     /* extern uint8_t TX_BUF[TX_PLOAD_WIDTH]; */
     /* extern uint8_t RX_BUF[RX_PLOAD_WIDTH]; */
@@ -69,8 +66,6 @@ int main() {
     /* } */
     /* OLED_ShowString(0, 2, "nrf to mcu ok"); */
     /* printf("\r\n NRF与MCU连接成功\r\n"); */
-
-
 
     /* 进入接收模式 */
     /* NRF_RX_Mode();     // NRF 进入接收模式 */
@@ -129,7 +124,7 @@ int main() {
     // printf("%s\n", "adc send start");
     // NRF_TX_Mode();
     // delay_ms(100);
-
+    //
     // u16 hval = 0;
     // u16 vval = 0;
     // while (1) {
@@ -137,12 +132,12 @@ int main() {
     //     /* 发送模式 */
     //     hval = scaler.conv(&scaler, ADC_VAL[0]);
     //     vval = scaler.conv(&scaler, ADC_VAL[1]);
-
+    //
     //     printf("hval:%d,vval:%d\n", hval, vval);
-    //     TX_BUF[0] = (uint8_t)hval;
-    //     TX_BUF[1] = (uint8_t)vval;
+    //     // TX_BUF[0] = (uint8_t)hval;
+    //     // TX_BUF[1] = (uint8_t)vval;
     //     // NRF_Tx_Dat(TX_BUF);
-    //     uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
+    //     // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
     //     // printf("%s\n", "send ");
     //     // printf("send after status:%d\n", NrfStatus);
     // }
@@ -176,8 +171,6 @@ int main() {
     //     // }
     // }
 
-
-
     // NRF24_Config();
 
     // USART_DMA_Demo
@@ -185,30 +178,26 @@ int main() {
     //     /* code */
     // }
 
-
-
     // DMA_M2M_Demo();
-
-
 
     ADC_Config();
     /* PWM_Config(); */
-    u16 ch4       = 0;
-    u16 ch5       = 0;
+    u16 ch4 = 0;
+    u16 ch5 = 0;
     Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
     /* Scaler scaler = ScalerInit(0, 18000, 0, 4095); */
     while (1) {
-    delay_ms(30);
+        delay_ms(30);
         // delay_ms_stk(1000);
         // count++;
         // printf("%ld\n",count);
-    /* val = ADC_AVG_Read(1000); */
-    ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
-    ch4 = scaler.conv(&scaler, ch4);
-    ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
-    ch5 = scaler.conv(&scaler, ch5);
-    printf("--%d, %d\n", ch4, ch5);
-    // printf("--\n");
+        /* val = ADC_AVG_Read(1000); */
+        ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
+        ch4 = scaler.conv(&scaler, ch4);
+        ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
+        ch5 = scaler.conv(&scaler, ch5);
+        printf("--%d, %d\n", ch4, ch5);
+        // printf("--\n");
 
         // TIM_SetCompare1(TIM3, 0);
         /* TIM_SetCompare1(TIM3, val); */
@@ -223,8 +212,6 @@ int main() {
     }
     return 0;
 
-
-
     ADC_Config();
     while (1) {
         delay_ms(30);
@@ -238,8 +225,6 @@ int main() {
         // OLED_ShowNum(0, 6, ADC_AVG_Read(ADC_Channel_4, 10), 2, 20);
     }
     return 0;
-
-
 
     // PWM_Config();
     // // TIM_SetCompare1(TIM3, (1 << 16) - 1);
@@ -266,8 +251,6 @@ int main() {
     //     // // OLED_Clear();
     //     // // OLED_ShowNum(0, 6, redval, 2, 20);
     // }
-
-
 
     // u16 led0pwmval = 0;
     // u8 dir         = 1;
@@ -307,7 +290,6 @@ int main() {
     // delay_ms(1000);
     // }
 
-
     // DAC_Config();
     // while (1) {
     //     u_int8_t i = 0;
@@ -326,19 +308,15 @@ int main() {
     //     }
     // }
 
-
     // USART_SendString(USART3, "wifi 通信");
-
 
     // USART_SendString(USART3, "WIFI_RX_STA RESET");
     // WIFI_RX_STA = 0;
-
 
     // WIFI_IIM_Start(9000, 7200);
 
     // USART2_Start();
     // USART_SendString(USART2, "usart2");
-
 
     // SendByte('z');
     // SendByte('d');
@@ -391,7 +369,6 @@ int main() {
     // }
     // }
 
-
     /* 中断 NVIC */
     // LED1_GPIO_Config();
 
@@ -410,7 +387,6 @@ int main() {
     //     // delay_ms_stk(100);
     // }
 
-
     /* key check */
     // LED_GPIO_Config();
     // KEY_GPIO_Config();
@@ -426,7 +402,6 @@ int main() {
     //     }
     //     count++;
     // }
-
 
     /* delay */
     // LED_GPIO_Config();
