@@ -1,7 +1,8 @@
 #ifndef __ADC_H
 #define __ADC_H
 
-#include "stm32f10x_dac.h"
+#include "stm32f10x.h"
+
 
 void ADC_Config(void);
 uint16_t ADC_Read();

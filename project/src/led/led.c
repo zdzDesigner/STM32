@@ -1,5 +1,4 @@
 #include "led.h"
-#include "sys.h"
 
 void LED_GPIO_Config(void)
 {

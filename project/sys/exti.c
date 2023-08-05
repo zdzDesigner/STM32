@@ -1,7 +1,11 @@
-#include "sys.h"
+#include "stm32f10x_rcc.h"
+#include "exti.h"
+#include "key.h"
+#include "led.h"
 // 必须一致 GPIO_Pin_5 GPIO_PinSource5 EXTI_Line5 EXTI9_5_IRQn (5~9)
 
-void MY_EXTI_Config(void) {
+void MY_EXTI_Config(void)
+{
     // EXTI1 , GPIOC使能
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC | RCC_APB2Periph_AFIO, ENABLE);
 
@@ -9,11 +13,10 @@ void MY_EXTI_Config(void) {
 
     GPIO_InitTypeDef gpio;
     gpio.GPIO_Mode = GPIO_Mode_IPU;
-    gpio.GPIO_Pin  = GPIO_Pin_5;
+    gpio.GPIO_Pin = GPIO_Pin_5;
     GPIO_Init(GPIOC, &gpio);
 
-
-    GPIO_EXTILineConfig(GPIO_PortSourceGPIOC, GPIO_PinSource5);  // Pin5设置为EXTI输入线 PC[5]
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOC, GPIO_PinSource5); // Pin5设置为EXTI输入线 PC[5]
 
     // EXTIx[3:0]:EXTIx配置(x = 0 ... 3) (EXTI x configuration)
     // 这些位可由软件读写,用于选择EXTIx外部中断的输入源。参看9.2.5节。
@@ -33,15 +36,15 @@ void MY_EXTI_Config(void) {
 
     // 初始NVIC
     NVIC_InitTypeDef nvic;
-    nvic.NVIC_IRQChannel                   = EXTI9_5_IRQn; // 由于EXTI5~EXTI9线使用同一个中断向量，这个中断向量是:EXTI9_5_IRQn
+    nvic.NVIC_IRQChannel = EXTI9_5_IRQn; // 由于EXTI5~EXTI9线使用同一个中断向量，这个中断向量是:EXTI9_5_IRQn
     nvic.NVIC_IRQChannelPreemptionPriority = 3;
-    nvic.NVIC_IRQChannelSubPriority        = 3;
-    nvic.NVIC_IRQChannelCmd                = ENABLE;
+    nvic.NVIC_IRQChannelSubPriority = 3;
+    nvic.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvic);
 }
 
-
-void EXTI9_5_IRQHandler(void) {
+void EXTI9_5_IRQHandler(void)
+{
     if (EXTI_GetITStatus(EXTI_Line5) == SET) {
         if (KEY_EXTI_DOWN) {
             LED_Open();
