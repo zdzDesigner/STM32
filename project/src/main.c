@@ -38,9 +38,44 @@ static int send()
 
 static int send2()
 {
+    ADC_Config();
+    /* PWM_Config(); */
+    u16 ch4 = 0;
+    u16 ch5 = 0;
+    Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
+    /* Scaler scaler = ScalerInit(0, 18000, 0, 4095); */
     while (1) {
-        delay_ms(300);
-        printf("ssssss");
+        delay_ms(30);
+        // delay_ms_stk(1000);
+        // count++;
+        // printf("%ld\n",count);
+        /* val = ADC_AVG_Read(1000); */
+        ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
+        ch4 = scaler.conv(&scaler, ch4);
+        ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
+        ch5 = scaler.conv(&scaler, ch5);
+        printf("--%d, %d\n", ch4, ch5);
+        // printf("--\n");
+
+        // TIM_SetCompare1(TIM3, 0);
+        /* TIM_SetCompare1(TIM3, val); */
+        /* TIM_SetCompare2(TIM3, val); */
+        // TIM_SetCompare2(TIM3, 0);
+        // TIM_SetCompare2(TIM3, 10);
+        // TIM_SetCompare2(TIM3, 100);
+        // TIM_SetCompare2(TIM3, 500);
+        // TIM_SetCompare2(TIM3, 1000);
+        // TIM_SetCompare2(TIM3, 2000);
+        // TIM_SetCompare2(TIM3, 10000);
+    }
+    return 0;
+}
+
+static int send_demo()
+{
+    while (1) {
+        delay_ms(30);
+        printf("ssssss\n");
     }
     return 0;
 }
@@ -56,4 +91,5 @@ int main()
 
     // return send();
     return send2();
+    // return send_demo();
 }
