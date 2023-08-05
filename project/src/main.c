@@ -1,11 +1,9 @@
-#include "sys.h"
-#include "led.h"
+// #include "led.h"
 #include "delay.h"
 #include "usart.h"
 #include "adc.h"
 #include "util/scale.h"
 #include "nrf24/nrf24.h"
-#include "printf.h"
 
 extern uint16_t ADC_VAL[2];
 extern uint8_t TX_BUF[RX_PLOAD_WIDTH];
@@ -41,7 +39,7 @@ static int send()
 static int send2()
 {
     while (1) {
-        delay_ms(3000);
+        delay_ms(300);
         printf("ssssss");
     }
     return 0;
@@ -54,7 +52,7 @@ int main()
 
     delay_init();
     PRINT_Config();
-    LED_GPIO_Config();
+    // LED_GPIO_Config();
 
     // return send();
     return send2();
