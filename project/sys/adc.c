@@ -1,5 +1,6 @@
 #include "adc.h"
-#include "printf.h"
+#include "stm32f10x.h"
+#include "stm32f10x_dma.h"
 
 // !! ADC_Channel_4 规则通道和GPIO关系 GPIO_Pin_4
 
@@ -73,16 +74,19 @@ static void adcInit(void)
     // adc.ADC_ScanConvMode = DISABLE;                // 单通道:DISABLE, 多通道:ENABLE; ADC1->CR1&=~(1<<8);
     // TODO::连续转换会导致数据错乱问题（2020-09-06）
     // adc.ADC_ContinuousConvMode = DISABLE;  // 单次转换:DISABLE, 连续转换:ENABLE; // ADC1->CR2&=~(1<<1);
-    adc.ADC_ContinuousConvMode = ENABLE;                  // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1);
+    // adc.ADC_ContinuousConvMode = DISABLE;                 // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1); 需要每次主动启动 ADC_SoftwareStartConvCmd
+    adc.ADC_ContinuousConvMode = ENABLE;                  // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1); 需要每次主动启动 ADC_SoftwareStartConvCmd
     adc.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None; // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
     // adc.ADC_ExternalTrigConv = ADC_ExternalTrigInjecConv_None;  // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
     adc.ADC_DataAlign = ADC_DataAlign_Right; // 数据对齐方式:左:高位在前, 右:低位在前; ADC1->CR2&=~(1<<11);
     adc.ADC_NbrOfChannel = 2;                // 顺序进行规则转换的ADC通道的数目1 ADC1->SQR1&=~(0XF<<20); ADC1->SQR1|=0<<20;
     ADC_Init(ADC1, &adc);
 
-    // 采样周期
-    /* ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_239Cycles5); */
-    /* ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_239Cycles5); */
+    // 添加到规则通道
+    // ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_239Cycles5);
+    // ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_239Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_55Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_55Cycles5);
 
     /* ADC_DMACmd(ADC1, ENABLE); // TODO::开启ADC_DMA */
     ADC_Cmd(ADC1, ENABLE); // 使能ADC1 ADC1->CR2|=0;
@@ -93,7 +97,7 @@ static void adcInit(void)
     while (ADC_GetResetCalibrationStatus(ADC1)) {} // 等待复位校准结束 // while(ADC1->CR2&1<<3)
     ADC_StartCalibration(ADC1);                    // 开启AD校准       // ADC1->CR2|=1<<2;
     while (ADC_GetCalibrationStatus(ADC1)) {}      // 等待校准结束     // while(ADC1->CR2&1<<2)
-    /* ADC_SoftwareStartConvCmd(ADC1, ENABLE); */
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
 static void dmaInit(void)
@@ -102,7 +106,7 @@ static void dmaInit(void)
     DMA_DeInit(DMA1_Channel1);
 
     DMA_InitTypeDef dma;
-    dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+    dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; // 外设地址
     dma.DMA_MemoryBaseAddr = (uint32_t)ADC_DMA_BUF;
     dma.DMA_DIR = DMA_DIR_PeripheralSRC;
     dma.DMA_Mode = DMA_Mode_Circular;
@@ -136,10 +140,15 @@ uint16_t ADC_ReadCh(uint8_t ch)
 
     uint16_t adc_value = 0;
 
-    ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_7Cycles5); // 设置ADC1通道ch的转换周期为7.5个采样周期，采样次序为1
-    /* ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5 );   //设置ADC1通道ch的转换周期为7.5个采样周期，采样次序为1 */
+    // uint8_t rank = 2;
+    // if (ch == ADC_Channel_4) rank = 1;
+    // if (ch == ADC_Channel_5) rank = 2;
 
-    ADC_SoftwareStartConvCmd(ADC1, ENABLE); // 使能软件触发
+    ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_7Cycles5); // 设置ADC1通道ch的转换周期为7.5个采样周期，采样次序为1
+    // ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_55Cycles5); // 设置ADC1通道ch的转换周期为7.5个采样周期，采样次序为1
+    // ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5 );   //设置ADC1通道ch的转换周期为7.5个采样周期，采样次序为1 */
+
+    // ADC_SoftwareStartConvCmd(ADC1, ENABLE); // !!单次转换转换时，这里需要主动开启,使能软件触发
 
     while (!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)) {}; // 等待转换完成
 
@@ -156,6 +165,9 @@ uint16_t ADC_Read()
     return ADC_GetConversionValue(ADC1); // ADC1->DR
 }
 
+// 手动控制DMA转换
+// 1.DMA_Cmd(DMA1_Channel1, DISABLE)  先失能
+// 2.DMA_Cmd(DMA1_Channel1, ENABLE)   再使能
 static void MYDMA_Enable(void)
 {
     // 错乱问题，先关闭再开启
@@ -176,6 +188,9 @@ static void MYDMA_Enable(void)
     DMA_SetCurrDataCounter(DMA1_Channel1, BUFFER_SIZE); // 从新设置缓冲大小,指向数组0
     ADC_SoftwareStartConvCmd(ADC1, ENABLE);
     DMA_Cmd(DMA1_Channel1, ENABLE); // 使能USART1 TX DMA1 所指示的通道
+
+    while (DMA_GetFlagStatus(DMA1_FLAG_TC1)) {}; // 等待搬运完成
+    DMA_ClearFlag(DMA1_FLAG_TC1);                // 清除标志位
 }
 
 u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)
@@ -204,8 +219,8 @@ u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)
 u16 ADC_AVG_Read(u16 times)
 {
     u32 total = 0;
-    u16 max = 0;
-    u16 min = 1 << 15;
+    u16 max = 0;       // 设置最小值，大于时替换
+    u16 min = 1 << 15; // 设置最大值，方便小于时替换
     u16 cur = 0;
     u16 t;
     for (t = 0; t < times; t++) {
@@ -217,7 +232,7 @@ u16 ADC_AVG_Read(u16 times)
             min = cur;
         }
         total += cur;
-        delay_us(20);
+        delay_us(200);
     }
     /* OLED_ShowNum(0, 1, max, 2, 20); */
     /* OLED_ShowNum(0, 3, min, 2, 20); */

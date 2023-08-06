@@ -50,7 +50,7 @@ static int send2()
         // delay_ms_stk(1000);
         // count++;
         // printf("%ld\n",count);
-        /* val = ADC_AVG_Read(1000); */
+        // ch4 = ADC_AVG_Read(1000);
         ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
         // ch4 = scaler.conv(&scaler, ch4);
         ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
