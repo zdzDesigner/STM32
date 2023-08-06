@@ -1,9 +1,9 @@
 // #include "led.h"
-#include "delay.h"
-#include "usart.h"
 #include "adc.h"
-#include "util/scale.h"
+#include "delay.h"
 #include "nrf24/nrf24.h"
+#include "usart.h"
+#include "util/scale.h"
 
 extern uint16_t ADC_VAL[2];
 extern uint8_t TX_BUF[RX_PLOAD_WIDTH];
@@ -21,14 +21,18 @@ static int send()
     u16 hval = 0;
     u16 vval = 0;
     while (1) {
-        delay_ms(10);
+        printf("--------\n");
+        delay_ms(100);
+        // MYDMA_Enable();
         /* 发送模式 */
-        hval = scaler.conv(&scaler, ADC_VAL[0]);
-        vval = scaler.conv(&scaler, ADC_VAL[1]);
-
-        printf("hval:%d,vval:%d\n", hval, vval);
-        TX_BUF[0] = (uint8_t)hval;
-        TX_BUF[1] = (uint8_t)vval;
+        // hval = scaler.conv(&scaler, ADC_VAL[0]);
+        // vval = scaler.conv(&scaler, ADC_VAL[1]);
+        // hval = ADC_VAL[0];
+        // vval = &scaler, ADC_VAL[1];
+        // //
+        // printf("hval:%d,vval:%d\n", hval, vval);
+        // TX_BUF[0] = (uint8_t)hval;
+        // TX_BUF[1] = (uint8_t)vval;
         // NRF_Tx_Dat(TX_BUF);
         // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
@@ -92,6 +96,6 @@ int main()
     // LED_GPIO_Config();
 
     // return send();
-    return send2();
-    // return send_demo();
+    // return send2();
+    return send_demo();
 }

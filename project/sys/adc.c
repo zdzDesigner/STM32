@@ -4,12 +4,12 @@
 
 // !! ADC_Channel_4 规则通道和GPIO关系 GPIO_Pin_4
 
-#define LENGTH           2
-#define ADC_DMA_BUF_SIZE 255
-#define BUFFER_SIZE      LENGTH *ADC_DMA_BUF_SIZE
+#define LENGTH 1
+#define ADC_DMA_BUF_SIZE 2
+#define BUFFER_SIZE LENGTH *ADC_DMA_BUF_SIZE
 // #define BUFFER_SIZE ADC_DMA_BUF_SIZE
-uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE][LENGTH];
-// uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE];
+// uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE][LENGTH];
+uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE];
 
 // Scaler   scaler;
 uint16_t ADC_VAL[2] = {0, 0};
@@ -19,7 +19,6 @@ static void adcInit(void);
 static void nvicDmaInit(void);
 static void nvicInit(void);
 static void dmaInit(void);
-static void MYDMA_Enable(void);
 
 void ADC_Config(void)
 {
@@ -88,8 +87,8 @@ static void adcInit(void)
     ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_55Cycles5);
     ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_55Cycles5);
 
-    /* ADC_DMACmd(ADC1, ENABLE); // TODO::开启ADC_DMA */
-    ADC_Cmd(ADC1, ENABLE); // 使能ADC1 ADC1->CR2|=0;
+    ADC_DMACmd(ADC1, ENABLE); // TODO::开启ADC_DMA
+    ADC_Cmd(ADC1, ENABLE);    // 使能ADC1 ADC1->CR2|=0;
 
     // 使能指定的ADC1的软件转换启动功能 ADC1->CR2|=1<<22;
     // 复位
@@ -120,8 +119,8 @@ static void dmaInit(void)
     dma.DMA_M2M = DMA_M2M_Disable;
 
     DMA_Init(DMA1_Channel1, &dma);
-    DMA_ITConfig(DMA1_Channel1, DMA_IT_TC, ENABLE); // 这里是正确的(DMA_IT_TC), 原因可查看dma.c文件
-    DMA_ClearITPendingBit(DMA_IT_TC);
+    // DMA_ITConfig(DMA1_Channel1, DMA_IT_TC, ENABLE); // 这里是正确的(DMA_IT_TC), 原因可查看dma.c文件
+    // DMA_ClearITPendingBit(DMA_IT_TC);
     DMA_Cmd(DMA1_Channel1, ENABLE);
 }
 
@@ -168,29 +167,36 @@ uint16_t ADC_Read()
 // 手动控制DMA转换
 // 1.DMA_Cmd(DMA1_Channel1, DISABLE)  先失能
 // 2.DMA_Cmd(DMA1_Channel1, ENABLE)   再使能
-static void MYDMA_Enable(void)
+void MYDMA_Enable(void)
 {
-    // 错乱问题，先关闭再开启
-    ADC_SoftwareStartConvCmd(ADC1, DISABLE);
-    DMA_Cmd(DMA1_Channel1, DISABLE); // 关闭USART1 TX DMA1 所指示的通道
-    // printf("%d\n",scaler.conv(&scaler, avg(ADC_DMA_BUF,ADC_DMA_BUF_SIZE)));
-    uint16_t i = 0;
-    uint16_t htemp[ADC_DMA_BUF_SIZE];
-    uint16_t vtemp[ADC_DMA_BUF_SIZE];
-    for (i; i < ADC_DMA_BUF_SIZE; i++) {
-        *(htemp + i) = ADC_DMA_BUF[i][0];
-        *(vtemp + i) = ADC_DMA_BUF[i][1];
-        // printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
-    }
-    ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
-    ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
-    memset(ADC_DMA_BUF, 0, BUFFER_SIZE);                // 清空数组
-    DMA_SetCurrDataCounter(DMA1_Channel1, BUFFER_SIZE); // 从新设置缓冲大小,指向数组0
-    ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-    DMA_Cmd(DMA1_Channel1, ENABLE); // 使能USART1 TX DMA1 所指示的通道
+    // // 错乱问题，先关闭再开启
+    // // ADC_SoftwareStartConvCmd(ADC1, DISABLE);
+    // DMA_Cmd(DMA1_Channel1, DISABLE); // 关闭USART1 TX DMA1 所指示的通道
+    // // printf("%d\n",scaler.conv(&scaler, avg(ADC_DMA_BUF,ADC_DMA_BUF_SIZE)));
+    //
+    // DMA_SetCurrDataCounter(DMA1_Channel1, BUFFER_SIZE); // 从新设置缓冲大小,指向数组0
+    // // ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+    // DMA_Cmd(DMA1_Channel1, ENABLE); // 使能USART1 TX DMA1 所指示的通道
+    //
+    // while (DMA_GetFlagStatus(DMA1_FLAG_TC1)) {}; // 等待搬运完成
+    // DMA_ClearFlag(DMA1_FLAG_TC1);                // 清除标志位
 
-    while (DMA_GetFlagStatus(DMA1_FLAG_TC1)) {}; // 等待搬运完成
-    DMA_ClearFlag(DMA1_FLAG_TC1);                // 清除标志位
+    // uint16_t htemp[ADC_DMA_BUF_SIZE];
+    // uint16_t vtemp[ADC_DMA_BUF_SIZE];
+    // for (i; i < ADC_DMA_BUF_SIZE; i++) {
+    //     *(htemp + i) = ADC_DMA_BUF[i][0];
+    //     *(vtemp + i) = ADC_DMA_BUF[i][1];
+    //     printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
+    // }
+    // ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
+    // ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
+    // memset(ADC_DMA_BUF, 0, BUFFER_SIZE);                // 清空数组
+
+    uint16_t i = 0;
+    for (i; i < ADC_DMA_BUF_SIZE; i++) {
+        printf("%d,%d\n", ADC_DMA_BUF[i], ADC_DMA_BUF[i]);
+    }
+    printf("dma ok\n");
 }
 
 u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)
