@@ -12,10 +12,11 @@ static int send()
 {
     /* 进入发送模式 */
     ADC_Config();
-    Scaler scaler = ScalerInit(0, 255, 1740, 2400);
+    // Scaler scaler = ScalerInit(0, 255, 1740, 2400);
+    Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
     printf("%s\n", "adc send start");
-    NRF_TX_Mode();
-    delay_ms(100);
+    // NRF_TX_Mode();
+    // delay_ms(100);
 
     u16 hval = 0;
     u16 vval = 0;
@@ -29,7 +30,7 @@ static int send()
         TX_BUF[0] = (uint8_t)hval;
         TX_BUF[1] = (uint8_t)vval;
         // NRF_Tx_Dat(TX_BUF);
-        uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
+        // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
         // printf("send after status:%d\n", NrfStatus);
     }
@@ -43,7 +44,7 @@ static int send2()
     u16 ch4 = 0;
     u16 ch5 = 0;
     Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
-    /* Scaler scaler = ScalerInit(0, 18000, 0, 4095); */
+    // Scaler scaler = ScalerInit(0, 18000, 0, 4095);
     while (1) {
         delay_ms(30);
         // delay_ms_stk(1000);
@@ -51,10 +52,11 @@ static int send2()
         // printf("%ld\n",count);
         /* val = ADC_AVG_Read(1000); */
         ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
-        ch4 = scaler.conv(&scaler, ch4);
+        // ch4 = scaler.conv(&scaler, ch4);
         ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
-        ch5 = scaler.conv(&scaler, ch5);
+        // ch5 = scaler.conv(&scaler, ch5);
         printf("--%d, %d\n", ch4, ch5);
+        // printf("--%d\n", ch4);
         // printf("--\n");
 
         // TIM_SetCompare1(TIM3, 0);

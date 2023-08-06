@@ -1,4 +1,5 @@
 #include "adc.h"
+#include "printf.h"
 
 // !! ADC_Channel_4 规则通道和GPIO关系 GPIO_Pin_4
 
@@ -23,7 +24,7 @@ void ADC_Config(void)
 {
     gpioInit();
     nvicInit();
-    /* dmaInit(); */
+    dmaInit();
     adcInit();
     // ADC_ITConfig(ADC1, ADC_IT_EOC, ENABLE);
 
@@ -64,16 +65,15 @@ static void adcInit(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
     // RCC->CFGR&=~(3<<14);RCC->CFGR|=2<<14; 6分频ADC时钟为12M
     RCC_ADCCLKConfig(RCC_PCLK2_Div6); // 设置分频, ADC1的时钟不大于14MHz
-    // RCC->APB2RSTR|=1<<9; ADC1复位
-    ADC_DeInit(ADC1);
+    ADC_DeInit(ADC1);                 // ADC1复位 // RCC->APB2RSTR|=1<<9;
 
     ADC_InitTypeDef adc;
-    adc.ADC_Mode = ADC_Mode_Independent; // 独立模式; ADC1->CR1&=0XF0FFFF;ADC1->CR1|=0<<16;
-    adc.ADC_ScanConvMode = ENABLE;       // 单通道:DISABLE, 多通道:ENABLE; ADC1->CR1&=~(1<<8);
+    adc.ADC_Mode = ADC_Mode_Independent; // 独立模式; // ADC1->CR1&=0XF0FFFF;ADC1->CR1|=0<<16;
+    adc.ADC_ScanConvMode = ENABLE;       // 单通道:DISABLE, 多通道:ENABLE; // ADC1->CR1&=~(1<<8);
     // adc.ADC_ScanConvMode = DISABLE;                // 单通道:DISABLE, 多通道:ENABLE; ADC1->CR1&=~(1<<8);
     // TODO::连续转换会导致数据错乱问题（2020-09-06）
-    // adc.ADC_ContinuousConvMode = DISABLE;  // 单次转换:DISABLE, 连续转换:ENABLE; ADC1->CR2&=~(1<<1);
-    adc.ADC_ContinuousConvMode = ENABLE;                  // 单次转换:DISABLE, 连续转换:ENABLE; ADC1->CR2&=~(1<<1);
+    // adc.ADC_ContinuousConvMode = DISABLE;  // 单次转换:DISABLE, 连续转换:ENABLE; // ADC1->CR2&=~(1<<1);
+    adc.ADC_ContinuousConvMode = ENABLE;                  // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1);
     adc.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None; // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
     // adc.ADC_ExternalTrigConv = ADC_ExternalTrigInjecConv_None;  // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
     adc.ADC_DataAlign = ADC_DataAlign_Right; // 数据对齐方式:左:高位在前, 右:低位在前; ADC1->CR2&=~(1<<11);
@@ -85,16 +85,14 @@ static void adcInit(void)
     /* ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_239Cycles5); */
 
     /* ADC_DMACmd(ADC1, ENABLE); // TODO::开启ADC_DMA */
-    ADC_Cmd(ADC1, ENABLE); // ADC1->CR2|=0;使能ADC1
+    ADC_Cmd(ADC1, ENABLE); // 使能ADC1 ADC1->CR2|=0;
 
     // 使能指定的ADC1的软件转换启动功能 ADC1->CR2|=1<<22;
-    //  复位
-    ADC_ResetCalibration(ADC1); // ADC1->CR2|=1<<3;使能复位校准
-    while (ADC_GetResetCalibrationStatus(ADC1)) {
-    }                           // while(ADC1->CR2&1<<3)等待复位校准结束
-    ADC_StartCalibration(ADC1); // ADC1->CR2|=1<<2;开启AD校准
-    while (ADC_GetCalibrationStatus(ADC1)) {
-    } // while(ADC1->CR2&1<<2)等待校准结束
+    // 复位
+    ADC_ResetCalibration(ADC1);                    // 使能复位校准     // ADC1->CR2|=1<<3;
+    while (ADC_GetResetCalibrationStatus(ADC1)) {} // 等待复位校准结束 // while(ADC1->CR2&1<<3)
+    ADC_StartCalibration(ADC1);                    // 开启AD校准       // ADC1->CR2|=1<<2;
+    while (ADC_GetCalibrationStatus(ADC1)) {}      // 等待校准结束     // while(ADC1->CR2&1<<2)
     /* ADC_SoftwareStartConvCmd(ADC1, ENABLE); */
 }
 
@@ -143,8 +141,7 @@ uint16_t ADC_ReadCh(uint8_t ch)
 
     ADC_SoftwareStartConvCmd(ADC1, ENABLE); // 使能软件触发
 
-    while (!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)) {
-    }; // 等待转换完成
+    while (!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)) {}; // 等待转换完成
 
     adc_value = ADC_GetConversionValue(ADC1); // 获取转换值
 
@@ -153,9 +150,8 @@ uint16_t ADC_ReadCh(uint8_t ch)
 
 uint16_t ADC_Read()
 {
-    ADC_SoftwareStartConvCmd(ADC1, ENABLE); // 使能指定的ADC1的软件转换启动功能 ADC1->CR2|=1<<22;
-    while (!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)) {
-    } // 等待转换结束 while(!(ADC1->SR&1<<1))
+    ADC_SoftwareStartConvCmd(ADC1, ENABLE);           // 使能指定的ADC1的软件转换启动功能 ADC1->CR2|=1<<22;
+    while (!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)) {} // 等待转换结束 while(!(ADC1->SR&1<<1))
     ADC_ClearFlag(ADC1, ADC_FLAG_EOC);
     return ADC_GetConversionValue(ADC1); // ADC1->DR
 }
