@@ -4,12 +4,12 @@
 
 // !! ADC_Channel_4 规则通道和GPIO关系 GPIO_Pin_4
 
-#define LENGTH 1
-#define ADC_DMA_BUF_SIZE 2
-#define BUFFER_SIZE LENGTH *ADC_DMA_BUF_SIZE
+#define LENGTH           2
+#define ADC_DMA_BUF_SIZE 200
+#define BUFFER_SIZE      LENGTH *ADC_DMA_BUF_SIZE
 // #define BUFFER_SIZE ADC_DMA_BUF_SIZE
-// uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE][LENGTH];
-uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE];
+uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE][LENGTH];
+// uint16_t ADC_DMA_BUF[ADC_DMA_BUF_SIZE];
 
 // Scaler   scaler;
 uint16_t ADC_VAL[2] = {0, 0};
@@ -181,22 +181,32 @@ void MYDMA_Enable(void)
     // while (DMA_GetFlagStatus(DMA1_FLAG_TC1)) {}; // 等待搬运完成
     // DMA_ClearFlag(DMA1_FLAG_TC1);                // 清除标志位
 
-    // uint16_t htemp[ADC_DMA_BUF_SIZE];
-    // uint16_t vtemp[ADC_DMA_BUF_SIZE];
-    // for (i; i < ADC_DMA_BUF_SIZE; i++) {
-    //     *(htemp + i) = ADC_DMA_BUF[i][0];
-    //     *(vtemp + i) = ADC_DMA_BUF[i][1];
-    //     printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
-    // }
-    // ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
-    // ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
+    uint16_t i = 0;
+    uint16_t htemp[ADC_DMA_BUF_SIZE];
+    uint16_t vtemp[ADC_DMA_BUF_SIZE];
+    for (i; i < ADC_DMA_BUF_SIZE; i++) {
+        *(htemp + i) = ADC_DMA_BUF[i][0];
+        *(vtemp + i) = ADC_DMA_BUF[i][1];
+        // printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
+    }
+    ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
+    ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
+    // printf("%d,%d\n", ADC_VAL[0], ADC_VAL[1]);
     // memset(ADC_DMA_BUF, 0, BUFFER_SIZE);                // 清空数组
 
-    uint16_t i = 0;
-    for (i; i < ADC_DMA_BUF_SIZE; i++) {
-        printf("%d,%d\n", ADC_DMA_BUF[i], ADC_DMA_BUF[i]);
-    }
-    printf("dma ok\n");
+    // uint16_t i = 0;
+    // for (i; i < ADC_DMA_BUF_SIZE; i++) {
+    //     // printf("%d,%d\n", ADC_DMA_BUF[i], ADC_DMA_BUF[i]);
+    //     if (i % 2 == 0) {
+    //         printf("%d\n", ADC_DMA_BUF[i]);
+    //     }
+    // }
+
+    // for (i; i < ADC_DMA_BUF_SIZE; i++) {
+    //     printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
+    // }
+
+    // printf("dma ok\n");
 }
 
 u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)

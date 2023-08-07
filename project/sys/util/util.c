@@ -1,12 +1,11 @@
 #include "util.h"
 
-#include <stdio.h>
-
 /**
  * 判断指定长度的两个数据源是否完全相等，
  * 如果完全相等返回1，只要其中一对数据不相等返回0
  */
-uint8_t Buffercmp(const uint32_t* pBuffer, uint32_t* pBuffer1, uint16_t BufferLength) {
+uint8_t Buffercmp(const uint32_t *pBuffer, uint32_t *pBuffer1, uint16_t BufferLength)
+{
     /* 数据长度递减 */
     while (BufferLength--) {
         printf("BufferLength: %d\n", BufferLength);
@@ -26,7 +25,8 @@ uint8_t Buffercmp(const uint32_t* pBuffer, uint32_t* pBuffer1, uint16_t BufferLe
     return 1;
 }
 
-uint8_t BuffercmpUint8(const uint8_t* pBuffer, uint8_t* pBuffer1, uint8_t BufferLength) {
+uint8_t BuffercmpUint8(const uint8_t *pBuffer, uint8_t *pBuffer1, uint8_t BufferLength)
+{
     /* 数据长度递减 */
     while (BufferLength--) {
         printf("BufferLength: %d\n", BufferLength);
@@ -46,8 +46,8 @@ uint8_t BuffercmpUint8(const uint8_t* pBuffer, uint8_t* pBuffer1, uint8_t Buffer
     return 1;
 }
 
-
-void TraceElementU8(uint8_t* arr, uint16_t len, char* tag) {
+void TraceElementU8(uint8_t *arr, uint16_t len, char *tag)
+{
     while (len--) {
         printf("%s:%d\n", tag, *arr);
         arr++;
