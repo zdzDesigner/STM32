@@ -68,17 +68,17 @@ static void adcInit(void)
     ADC_DeInit(ADC1);                 // ADC1复位 // RCC->APB2RSTR|=1<<9;
 
     ADC_InitTypeDef adc;
-    adc.ADC_Mode = ADC_Mode_Independent; // 独立模式; // ADC1->CR1&=0XF0FFFF;ADC1->CR1|=0<<16;
-    adc.ADC_ScanConvMode = ENABLE;       // 单通道:DISABLE, 多通道:ENABLE; // ADC1->CR1&=~(1<<8);
+    adc.ADC_Mode         = ADC_Mode_Independent; // 独立模式; // ADC1->CR1&=0XF0FFFF;ADC1->CR1|=0<<16;
+    adc.ADC_ScanConvMode = ENABLE;               // 单通道:DISABLE, 多通道:ENABLE; // ADC1->CR1&=~(1<<8);
     // adc.ADC_ScanConvMode = DISABLE;                // 单通道:DISABLE, 多通道:ENABLE; ADC1->CR1&=~(1<<8);
     // TODO::连续转换会导致数据错乱问题（2020-09-06）
     // adc.ADC_ContinuousConvMode = DISABLE;  // 单次转换:DISABLE, 连续转换:ENABLE; // ADC1->CR2&=~(1<<1);
     // adc.ADC_ContinuousConvMode = DISABLE;                 // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1); 需要每次主动启动 ADC_SoftwareStartConvCmd
-    adc.ADC_ContinuousConvMode = ENABLE;                  // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1); 需要每次主动启动 ADC_SoftwareStartConvCmd
-    adc.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None; // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
+    adc.ADC_ContinuousConvMode = ENABLE;                    // 单次转换:DISABLE, 连续转换:ENABLE;  // ADC1->CR2&=~(1<<1); 需要每次主动启动 ADC_SoftwareStartConvCmd
+    adc.ADC_ExternalTrigConv   = ADC_ExternalTrigConv_None; // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
     // adc.ADC_ExternalTrigConv = ADC_ExternalTrigInjecConv_None;  // 外部触发模式, 当前为软件触发; ADC1->CR2&=~(7<<17);ADC1->CR2|=7<<17;软件控制转换 ADC1->CR2|=1<<20;
-    adc.ADC_DataAlign = ADC_DataAlign_Right; // 数据对齐方式:左:高位在前, 右:低位在前; ADC1->CR2&=~(1<<11);
-    adc.ADC_NbrOfChannel = 2;                // 顺序进行规则转换的ADC通道的数目1 ADC1->SQR1&=~(0XF<<20); ADC1->SQR1|=0<<20;
+    adc.ADC_DataAlign    = ADC_DataAlign_Right; // 数据对齐方式:左:高位在前, 右:低位在前; ADC1->CR2&=~(1<<11);
+    adc.ADC_NbrOfChannel = 2;                   // 顺序进行规则转换的ADC通道的数目1 ADC1->SQR1&=~(0XF<<20); ADC1->SQR1|=0<<20;
     ADC_Init(ADC1, &adc);
 
     // 添加到规则通道
@@ -106,17 +106,17 @@ static void dmaInit(void)
 
     DMA_InitTypeDef dma;
     dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; // 外设地址
-    dma.DMA_MemoryBaseAddr = (uint32_t)ADC_DMA_BUF;
-    dma.DMA_DIR = DMA_DIR_PeripheralSRC;
-    dma.DMA_Mode = DMA_Mode_Circular;
+    dma.DMA_MemoryBaseAddr     = (uint32_t)ADC_DMA_BUF;
+    dma.DMA_DIR                = DMA_DIR_PeripheralSRC;
+    dma.DMA_Mode               = DMA_Mode_Circular;
     // dma.DMA_Mode               = DMA_Mode_Normal;
-    dma.DMA_BufferSize = BUFFER_SIZE;
+    dma.DMA_BufferSize         = BUFFER_SIZE;
     dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-    dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-    dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    dma.DMA_Priority = DMA_Priority_Medium;
-    dma.DMA_M2M = DMA_M2M_Disable;
+    dma.DMA_MemoryDataSize     = DMA_MemoryDataSize_HalfWord;
+    dma.DMA_PeripheralInc      = DMA_PeripheralInc_Disable;
+    dma.DMA_MemoryInc          = DMA_MemoryInc_Enable;
+    dma.DMA_Priority           = DMA_Priority_Medium;
+    dma.DMA_M2M                = DMA_M2M_Disable;
 
     DMA_Init(DMA1_Channel1, &dma);
     // DMA_ITConfig(DMA1_Channel1, DMA_IT_TC, ENABLE); // 这里是正确的(DMA_IT_TC), 原因可查看dma.c文件
@@ -127,10 +127,10 @@ static void dmaInit(void)
 static void nvicInit(void)
 {
     NVIC_InitTypeDef nvic;
-    nvic.NVIC_IRQChannel = DMA1_Channel1_IRQn;
+    nvic.NVIC_IRQChannel                   = DMA1_Channel1_IRQn;
     nvic.NVIC_IRQChannelPreemptionPriority = 2;
-    nvic.NVIC_IRQChannelSubPriority = 2;
-    nvic.NVIC_IRQChannelCmd = ENABLE;
+    nvic.NVIC_IRQChannelSubPriority        = 2;
+    nvic.NVIC_IRQChannelCmd                = ENABLE;
     NVIC_Init(&nvic);
 }
 
@@ -164,6 +164,22 @@ uint16_t ADC_Read()
     return ADC_GetConversionValue(ADC1); // ADC1->DR
 }
 
+void ADC_DMA_Avg()
+{
+    uint16_t i = 0;
+    uint16_t htemp[ADC_DMA_BUF_SIZE];
+    uint16_t vtemp[ADC_DMA_BUF_SIZE];
+    for (i; i < ADC_DMA_BUF_SIZE; i++) {
+        *(htemp + i) = ADC_DMA_BUF[i][0];
+        *(vtemp + i) = ADC_DMA_BUF[i][1];
+        // printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
+    }
+    ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
+    ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
+    // printf("%d,%d\n", ADC_VAL[0], ADC_VAL[1]);
+    memset(ADC_DMA_BUF, 0, BUFFER_SIZE); // 清空数组
+}
+
 // 手动控制DMA转换
 // 1.DMA_Cmd(DMA1_Channel1, DISABLE)  先失能
 // 2.DMA_Cmd(DMA1_Channel1, ENABLE)   再使能
@@ -181,18 +197,7 @@ void MYDMA_Enable(void)
     // while (DMA_GetFlagStatus(DMA1_FLAG_TC1)) {}; // 等待搬运完成
     // DMA_ClearFlag(DMA1_FLAG_TC1);                // 清除标志位
 
-    uint16_t i = 0;
-    uint16_t htemp[ADC_DMA_BUF_SIZE];
-    uint16_t vtemp[ADC_DMA_BUF_SIZE];
-    for (i; i < ADC_DMA_BUF_SIZE; i++) {
-        *(htemp + i) = ADC_DMA_BUF[i][0];
-        *(vtemp + i) = ADC_DMA_BUF[i][1];
-        // printf("%d,%d\n", ADC_DMA_BUF[i][0], ADC_DMA_BUF[i][1]);
-    }
-    ADC_VAL[0] = avg(htemp, ADC_DMA_BUF_SIZE);
-    ADC_VAL[1] = avg(vtemp, ADC_DMA_BUF_SIZE);
     // printf("%d,%d\n", ADC_VAL[0], ADC_VAL[1]);
-    // memset(ADC_DMA_BUF, 0, BUFFER_SIZE);                // 清空数组
 
     // uint16_t i = 0;
     // for (i; i < ADC_DMA_BUF_SIZE; i++) {
@@ -212,9 +217,9 @@ void MYDMA_Enable(void)
 u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)
 {
     u32 total = 0;
-    u16 max = 0;
-    u16 min = 1 << 15;
-    u16 cur = 0;
+    u16 max   = 0;
+    u16 min   = 1 << 15;
+    u16 cur   = 0;
     u16 t;
     for (t = 0; t < times; t++) {
         cur = ADC_ReadCh(ch);
@@ -235,9 +240,9 @@ u16 ADC_AVG_ReadCh(uint8_t ch, u16 times)
 u16 ADC_AVG_Read(u16 times)
 {
     u32 total = 0;
-    u16 max = 0;       // 设置最小值，大于时替换
-    u16 min = 1 << 15; // 设置最大值，方便小于时替换
-    u16 cur = 0;
+    u16 max   = 0;       // 设置最小值，大于时替换
+    u16 min   = 1 << 15; // 设置最大值，方便小于时替换
+    u16 cur   = 0;
     u16 t;
     for (t = 0; t < times; t++) {
         cur = ADC_Read();

@@ -26,7 +26,7 @@ static int send()
     while (1) {
         // printf("--------\n");
         delay_ms(100);
-        MYDMA_Enable();
+        ADC_DMA_Avg();
         /* 发送模式 */
         hval = scalerH.conv(&scalerH, ADC_VAL[0]);
         vval = scalerV.conv(&scalerV, ADC_VAL[1]);
