@@ -14,11 +14,8 @@ static int send()
     ADC_Config();
     Scaler scalerH = ScalerInit(0, 255, 1670, 2370);
     Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
-    // 1667,2373
-    // 1706,2390
-    // Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
     printf("%s\n", "adc send start");
-    // NRF_TX_Mode();
+    NRF_TX_Mode();
     // delay_ms(100);
 
     u16 hval = 0;

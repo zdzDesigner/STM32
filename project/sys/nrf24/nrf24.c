@@ -11,11 +11,10 @@
  *
  * 发送模式和接收模式由 nrf中的寄存器控制
  */
-uint8_t RX_BUF[RX_PLOAD_WIDTH];                                     //接收数据缓存
-uint8_t TX_BUF[TX_PLOAD_WIDTH];                                     //发射数据缓存
-uint8_t TX_ADDRESS[TX_ADR_WIDTH] = {0x34, 0x43, 0x10, 0x10, 0x01};  // 定义一个静态发送地址
+uint8_t RX_BUF[RX_PLOAD_WIDTH];                                    // 接收数据缓存
+uint8_t TX_BUF[TX_PLOAD_WIDTH];                                    // 发射数据缓存
+uint8_t TX_ADDRESS[TX_ADR_WIDTH] = {0x34, 0x43, 0x10, 0x10, 0x01}; // 定义一个静态发送地址
 uint8_t RX_ADDRESS[RX_ADR_WIDTH] = {0x34, 0x43, 0x10, 0x10, 0x01};
-
 
 static void nrf24GpioInit(void);
 static void spiGpioInit(void);
@@ -38,17 +37,17 @@ static void spiGpioInit(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 
     GPIO_InitTypeDef gpio;
-    gpio.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_15; // (SCK|MOSI)
-    gpio.GPIO_Mode = GPIO_Mode_AF_PP;
+    gpio.GPIO_Pin   = GPIO_Pin_13 | GPIO_Pin_15; // (SCK|MOSI)
+    gpio.GPIO_Mode  = GPIO_Mode_AF_PP;
     gpio.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOB, &gpio);
 
-    gpio.GPIO_Pin = GPIO_Pin_14; // MISO
+    gpio.GPIO_Pin  = GPIO_Pin_14; // MISO
     gpio.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOB, &gpio);
 
-    gpio.GPIO_Pin = GPIO_Pin_12; // NSS
-    gpio.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio.GPIO_Pin   = GPIO_Pin_12; // NSS
+    gpio.GPIO_Mode  = GPIO_Mode_Out_PP;
     gpio.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOB, &gpio);
 }
@@ -58,15 +57,15 @@ static void spiInit(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 
     SPI_InitTypeDef spi;
-    spi.SPI_Direction = SPI_Direction_2Lines_FullDuplex; // 全双工
-    spi.SPI_Mode = SPI_Mode_Master;
-    spi.SPI_DataSize = SPI_DataSize_8b;
-    spi.SPI_CPOL = SPI_CPOL_Low;                          // 空闲时SCK状态, Hith:高 Low:低
-    spi.SPI_CPHA = SPI_CPHA_1Edge;                        // 时钟相位, 奇|偶数边缘采样
-    spi.SPI_NSS = SPI_NSS_Soft;                           // NSS 片选
+    spi.SPI_Direction         = SPI_Direction_2Lines_FullDuplex; // 全双工
+    spi.SPI_Mode              = SPI_Mode_Master;
+    spi.SPI_DataSize          = SPI_DataSize_8b;
+    spi.SPI_CPOL              = SPI_CPOL_Low;             // 空闲时SCK状态, Hith:高 Low:低
+    spi.SPI_CPHA              = SPI_CPHA_1Edge;           // 时钟相位, 奇|偶数边缘采样
+    spi.SPI_NSS               = SPI_NSS_Soft;             // NSS 片选
     spi.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16; // 预分频值
-    spi.SPI_CRCPolynomial = 7;                            // 校验和
-    spi.SPI_FirstBit = SPI_FirstBit_MSB;                  // 大小端, 大端
+    spi.SPI_CRCPolynomial     = 7;                        // 校验和
+    spi.SPI_FirstBit          = SPI_FirstBit_MSB;         // 大小端, 大端
 
     SPI_Init(SPI2, &spi);
     SPI_Cmd(SPI2, ENABLE);
@@ -89,25 +88,25 @@ void SPI_NRF_Init(void)
 
     GPIO_InitTypeDef gpio;
     /*配置 SPI_NRF_SPI的 SCK,MISO,MOSI引脚，GPIOA^5,GPIOA^6,GPIOA^7 */
-    gpio.GPIO_Pin = SPI_GPIO_PIN;
+    gpio.GPIO_Pin   = SPI_GPIO_PIN;
     gpio.GPIO_Speed = GPIO_Speed_50MHz;
-    gpio.GPIO_Mode = GPIO_Mode_AF_PP; // 复用功能
+    gpio.GPIO_Mode  = GPIO_Mode_AF_PP; // 复用功能
     GPIO_Init(SPI_GPIO, &gpio);
 
     /*配置SPI_NRF_SPI的 CSN 引脚*/
-    gpio.GPIO_Pin = CSN_GPIO_PIN;
+    gpio.GPIO_Pin   = CSN_GPIO_PIN;
     gpio.GPIO_Speed = GPIO_Speed_50MHz;
-    gpio.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_Init(CSN_GPIO, &gpio);
 
     /*SPI_NRF_SPI的 nrf CE 引脚*/
-    gpio.GPIO_Pin = CE_GPIO_PIN;
+    gpio.GPIO_Pin   = CE_GPIO_PIN;
     gpio.GPIO_Speed = GPIO_Speed_10MHz;
-    gpio.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_Init(CE_GPIO, &gpio);
 
     /*配置SPI_NRF_SPI nrf IRQ引脚*/
-    gpio.GPIO_Pin = IRQ_GPIO_PIN;
+    gpio.GPIO_Pin  = IRQ_GPIO_PIN;
     gpio.GPIO_Mode = GPIO_Mode_IPU; // 上拉输入
     GPIO_Init(IRQ_GPIO, &gpio);
 
@@ -118,17 +117,17 @@ void SPI_NRF_Init(void)
 
     SPI_InitTypeDef spi;
     spi.SPI_Direction = SPI_Direction_2Lines_FullDuplex; // 双线全双工
-    spi.SPI_Mode = SPI_Mode_Master;                      // 主模式
+    spi.SPI_Mode      = SPI_Mode_Master;                 // 主模式
     // spi.SPI_Mode              = SPI_Mode_Slave;                  //从模式
     spi.SPI_DataSize = SPI_DataSize_8b; // 数据大小8位
-    spi.SPI_CPOL = SPI_CPOL_Low;        // 时钟极性，空闲时为低
-    spi.SPI_CPHA = SPI_CPHA_1Edge;      // 第1个边沿有效，上升沿为采样时刻
+    spi.SPI_CPOL     = SPI_CPOL_Low;    // 时钟极性，空闲时为低
+    spi.SPI_CPHA     = SPI_CPHA_1Edge;  // 第1个边沿有效，上升沿为采样时刻
     // spi.SPI_NSS               = SPI_NSS_Hard;                     //NSS信号由软件产生
     spi.SPI_NSS = SPI_NSS_Soft; // NSS信号由软件产生
     // spi.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;  //8分频，9MHz
     spi.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16; // 8分频，9MHz
     // spi.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;          //8分频，9MHz
-    spi.SPI_FirstBit = SPI_FirstBit_MSB; // 高位在前
+    spi.SPI_FirstBit      = SPI_FirstBit_MSB; // 高位在前
     spi.SPI_CRCPolynomial = 7;
     SPI_Init(SPIx, &spi);
 
@@ -142,15 +141,13 @@ void SPI_NRF_Init(void)
 uint8_t SPI_NRF_RW(uint8_t dat)
 {
     /* 当 SPI发送缓冲器非空时等待 */
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET) {
-    }
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE) == RESET) {}
 
     /* 通过 SPIx发送一字节数据 */
     SPI_I2S_SendData(SPIx, dat);
 
     /* 当SPI接收缓冲器为空时等待 */
-    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET) {
-    }
+    while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET) {}
 
     // printf("SPI_I2S_FLAG_TXE:%d\n", SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE));
 
@@ -310,21 +307,13 @@ void NRF_RX_Mode(void)
 void NRF_TX_Mode(void)
 {
     NRF_CE_LOW();
-
     SPI_NRF_WriteBuf(NRF_WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH); // 写TX节点地址
-
     SPI_NRF_WriteBuf(NRF_WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 设置TX节点地址,主要为了使能ACK
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + EN_AA, 0x01); // 使能通道0的自动应答
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + EN_RXADDR, 0x01); // 使能通道0的接收地址
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + SETUP_RETR, 0x1a); // 设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + RF_CH, CHANAL); // 设置RF通道为CHANAL
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + RF_SETUP, 0x0f); // 设置TX发射参数,0db增益,2Mbps,低噪声增益开启
-
     SPI_NRF_WriteReg(NRF_WRITE_REG + CONFIG, 0x0e); // 配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
 
     /*CE拉高，进入发送模式*/
@@ -362,8 +351,7 @@ uint8_t NRF_Tx_Dat(uint8_t *txbuf)
     // printf("STATUS F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + STATUS));
     // printf("CONFIG F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + CONFIG));
     /*等待发送完成中断 */
-    while (NRF_Read_IRQ() != 0) {
-    }
+    while (NRF_Read_IRQ() != 0) {}
 
     /*读取状态寄存器的值 */
     state = SPI_NRF_ReadReg(STATUS);
@@ -398,8 +386,7 @@ uint8_t NRF_Rx_Dat(uint8_t *rxbuf)
     uint8_t state;
     NRF_CE_HIGH(); // 进入接收状态
     /*等待接收中断*/
-    while (NRF_Read_IRQ() != 0) {
-    }
+    while (NRF_Read_IRQ() != 0) {}
 
     NRF_CE_LOW(); // 进入待机状态
     /*读取status寄存器的值  */
@@ -458,7 +445,7 @@ uint8_t NRF_Config(void)
     NRF_CSN_LOW();
     /*发送寄存器号*/
     uint8_t status = SPI_NRF_RW(NRF_READ_REG + CONFIG);
-    uint8_t dat = SPI_NRF_RW(NOP);
+    uint8_t dat    = SPI_NRF_RW(NOP);
     printf("status:%d,dat:%d\n", status, dat);
     NRF_CSN_HIGH();
     return status;
