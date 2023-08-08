@@ -17,7 +17,7 @@ int main()
     // WIFI_USART_Start();
     // WIFI_Esp8266();
 
-    /* OLED_Init(); */
+    OLED_Init();
     /* OLED_Clear(); */
 
     // OLED_ShowCHinese(30, 0, 0);
@@ -48,7 +48,7 @@ int main()
     // /*SPI 24l01初始化*/
     /* extern uint8_t TX_BUF[TX_PLOAD_WIDTH]; */
     /* extern uint8_t RX_BUF[RX_PLOAD_WIDTH]; */
-    /* SPI_NRF_Init(); */
+    SPI_NRF_Init();
     /* delay_ms(100); */
 
     /*检测NRF模块与MCU的连接*/
@@ -68,7 +68,7 @@ int main()
     /* printf("\r\n NRF与MCU连接成功\r\n"); */
 
     /* 进入接收模式 */
-    /* NRF_RX_Mode();     // NRF 进入接收模式 */
+    NRF_RX_Mode();     // NRF 进入接收模式 
     /* uint8_t hval = 0;  // digital */
     /* uint8_t cv   = 20; */
     /* PWM_Config(); */
@@ -171,7 +171,7 @@ int main()
     //     // }
     // }
 
-    // NRF24_Config();
+    NRF24_Config();
 
     // USART_DMA_Demo
     // while (1) {
