@@ -1,3 +1,12 @@
+## openocd
+```sh
+openocd -c "interface jlink" -c "transport select swd" -c "adapter_khz 4000" -f "/usr/share/openocd/scripts/target/stm32f1x.cfg" -c "program/home/zdz/Documents/Try/IOT/STM32/course/led/build/output.elf" -c "reset" -c "shutdown"
+```
+
+
+
+
+
 # PC13
 ## 地址 0x40011000 ~ 0x400113FF
 ## 共7个寄存器 3FF

@@ -1,4 +1,5 @@
-add_rules("mode.debug", "mode.release")
+add_rules("mode.debug")
+-- add_rules("mode.debug", "mode.release")
 
 
 
@@ -39,17 +40,17 @@ target("main", function()
   )
 
   add_asflags(
-    "-Og",
-    "-mcpu=cortex-m3",
-    "-mthumb",
+    -- "-Og",
+    -- "-mcpu=cortex-m3",
+    -- "-mthumb",
     "-x assembler-with-cpp",
     "-Wall -fdata-sections -ffunction-sections",
     "-g -gdwarf-2", { force = true }
   )
 
   add_ldflags(
-    "-Og",
-    "-mcpu=cortex-m3",
+    -- "-Og",
+    -- "-mcpu=cortex-m3",
     "-L./",
     "-TSTM32F103C8Tx_FLASH.ld",
     "-Wl,--gc-sections",
@@ -64,12 +65,27 @@ target("main", function()
     os.exec("arm-none-eabi-objcopy -O ihex ./build/output.elf ./build/output.hex")
     os.exec("arm-none-eabi-objcopy -O binary ./build/output.elf ./build/output.bin")
     print("生成已完成")
-    import("core.project.task")
-    task.run("flash")
     print("********************储存空间占用情况*****************************")
     os.exec("arm-none-eabi-size -Ax ./build/output.elf")
     os.exec("arm-none-eabi-size -Bx ./build/output.elf")
     os.exec("arm-none-eabi-size -Bd ./build/output.elf")
     print("heap-堆、stck-栈、.data-已初始化的变量全局/静态变量，bss-未初始化的data、.text-代码和常量")
+    -- os.exec("readelf -S ./build/output.elf")
+    import("core.project.task")
+    task.run("flash")
+  end)
+  -- 运行阶段
+  on_run(function()
+    import("core.project.task")
+    task.run("flash")
+  end)
+end)
+
+
+task("flash", function()
+  on_run(function()
+    print("******************** flash *****************************")
+    -- os.exec("JLinkExe -autoconnect 1 -device STM32F103C8 -if swd -speed 4000  -commandfile ./flash.jlink")
+    os.exec("openocd -f ./stm32f103c8.cfg")
   end)
 end)

@@ -14,21 +14,15 @@ target("stm32", function()
 
   add_files(
     "./src/**.c",
-    "./sys/**.c",
     "./lib/CMSIS/system_stm32f10x.c",
     "./lib/STM32F10x_StdPeriph_Driver/src/*.c",
     "./startup_stm32f103xb.s"
   )
+
   add_includedirs(
     "./src",
     "./src/key",
     "./src/led",
-    "./sys",
-    "./sys/oledv2",
-    "./sys/util",
-    "./sys/sr04",
-    "./sys/debug",
-    "./sys/nrf24",
     "./lib/CMSIS",
     "./lib/STM32F10x_StdPeriph_Driver/inc"
   )
