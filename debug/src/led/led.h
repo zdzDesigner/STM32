@@ -3,6 +3,7 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_rcc.h"
 
+
 #define LED_RCC RCC_APB2Periph_GPIOB
 #define LED_GPIO GPIOB
 #define LED_PIN GPIO_Pin_12 // 沉金开发板

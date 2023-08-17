@@ -10,6 +10,7 @@ void LED_GPIO_Config(void)
     // GPIO_ResetBits(GPIOC,GPIO_Pin_13);
     // GPIO_SetBits(GPIOC,GPIO_Pin_13);
 
+    // RCC_APB2PeriphClockCmd(LED_RCC, DISABLE);
     RCC_APB2PeriphClockCmd(LED_RCC, ENABLE);
     GPIO_InitTypeDef GPIO_InitObj;
     GPIO_InitObj.GPIO_Pin = LED_PIN;
@@ -29,16 +30,10 @@ void LED1_GPIO_Config(void)
     GPIO_Init(LED1_GPIO, &gpio);
 }
 
-void LED_Open(void)
-{
-    GPIO_ResetBits(LED_GPIO, LED_PIN);
-}
+void LED_Open(void) { GPIO_ResetBits(LED_GPIO, LED_PIN); }
 
 // 高位熄灭
-void LED_Close(void)
-{
-    GPIO_SetBits(LED_GPIO, LED_PIN);
-}
+void LED_Close(void) { GPIO_SetBits(LED_GPIO, LED_PIN); }
 
 void LED_Toggle(uint8_t flag)
 {
@@ -48,7 +43,6 @@ void LED_Toggle(uint8_t flag)
         GPIO_SetBits(LED_GPIO, LED_PIN);
     }
 }
-
 
 static uint8_t LED_FLAG = 2;
 void LED_FLAG_Toggle()
