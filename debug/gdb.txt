@@ -1,0 +1,18 @@
+9	    LED_GPIO_Config();
+Not supported on this target.
+[33mLED_GPIO_Config[m () at [32msrc/led/led.c[m:14
+14	    RCC_APB2PeriphClockCmd(LED_RCC, ENABLE);
+#0  [33mLED_GPIO_Config[m () at [32msrc/led/led.c[m:14
+#1  [34m0x080001b8[m in [33mmain[m () at [32msrc/main.c[m:9
+#0  [33mLED_GPIO_Config[m () at [32msrc/led/led.c[m:14
+        [36mGPIO_InitObj[m = {GPIO_Pin = 1197, GPIO_Speed = 0, GPIO_Mode = 8}
+#1  [34m0x080001b8[m in [33mmain[m () at [32msrc/main.c[m:9
+        [36mi[m = <optimized out>
+Undefined command: "db".  Try "help".
+Undefined command: "ds".  Try "help".
+Undefined command: "dw".  Try "help".
+Undefined command: "dg".  Try "help".
+quit
+EOF [assumed Y]
+Detaching from program: /home/zdz/Documents/Try/IOT/STM32/course/debug/build/output.elf, Remote target
+[Inferior 1 (Remote target) detached]

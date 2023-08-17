@@ -63,7 +63,7 @@ target("stm32", function()
     -- "-specs=nosys.specs",
     "-lc -lm -lnosys",
     -- "-lc -lm -lnosys -lrdimon -u _printf_float",
-    { force = true }
+    "-g3 -gdwarf-2", { force = true }
   )
   -- 设置导出路径
   set_targetdir("build")

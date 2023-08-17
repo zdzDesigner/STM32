@@ -1,14 +1,16 @@
 #include "led.h"
+#include "stm32f10x.h"
 
-static int i = 0;
-int        main()
+
+// static int i = 0;
+int main()
 {
 
     LED_GPIO_Config();
     LED_Open();
 
     // int count = 0;
-    // int i     = 0;
+    int i     = 0;
 
     while (1) {
         if (i == 0) {
