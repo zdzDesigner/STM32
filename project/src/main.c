@@ -1,4 +1,4 @@
-// #include "led.h"
+#include "led.h"
 #include "adc.h"
 #include "delay.h"
 #include "nrf24/nrf24.h"
@@ -15,13 +15,13 @@ static int send()
     Scaler scalerH = ScalerInit(0, 255, 1670, 2370);
     Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
     printf("%s\n", "adc send start");
-    NRF_TX_Mode();
+    // NRF_TX_Mode();
     // delay_ms(100);
 
     u16 hval = 0;
     u16 vval = 0;
     while (1) {
-        // printf("--------\n");
+        printf("--------\n");
         delay_ms(100);
         ADC_DMA_Avg();
         /* 发送模式 */
@@ -86,14 +86,41 @@ static int send_demo()
     return 0;
 }
 
+static void Delay(uint32_t nTime)
+{
+    while (nTime--) {}
+}
+static int light(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    // Enable GPIOA clock
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+
+    // Configure GPIOA Pin 1 as Output push-pull
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    while (1) {
+        // Toggle the LED state
+        GPIO_WriteBit(GPIOA, GPIO_Pin_3, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_3)));
+        Delay(1000000); // Delay for a while
+    }
+}
+
 int main()
 {
+    // light();
+    // return 0;
     // 定义中断组
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 
     delay_init();
     PRINT_Config();
-    // LED_GPIO_Config();
+    LED_GPIO_Config();
+    LED_Open();
 
     return send();
     // return send2();

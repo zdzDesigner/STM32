@@ -14,6 +14,7 @@ void LED_GPIO_Config(void)
     GPIO_InitTypeDef GPIO_InitObj;
     GPIO_InitObj.GPIO_Pin = LED_PIN;
     GPIO_InitObj.GPIO_Mode = GPIO_Mode_Out_PP;
+    // GPIO_InitObj.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitObj.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(LED_GPIO, &GPIO_InitObj);
     LED_Close();

@@ -39,7 +39,7 @@ target("stm32", function()
     -- "-mcpu=cortex-m0",
     "-mcpu=cortex-m3",
     "-Wall -fdata-sections -ffunction-sections",
-    "-g -gdwarf-2", { force = true }
+    "-g3 -gdwarf-2", { force = true }
   )
   add_asflags( -- 汇编阶段
     "-Og",
@@ -48,7 +48,7 @@ target("stm32", function()
     "-mcpu=cortex-m0plus",
     "-x assembler-with-cpp",
     "-Wall -fdata-sections -ffunction-sections",
-    "-g -gdwarf-2", { force = true }
+    "-g3 -gdwarf-2", { force = true }
   )
   add_ldflags( -- 链接阶段
   -- "-Og",
