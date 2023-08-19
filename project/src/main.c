@@ -12,8 +12,13 @@ static int send()
 {
     /* 进入发送模式 */
     ADC_Config();
-    Scaler scalerH = ScalerInit(0, 255, 1670, 2370);
-    Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
+    // old remote controller
+    // Scaler scalerH = ScalerInit(0, 255, 1670, 2370);
+    // Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
+
+    // new remote controller
+    Scaler scalerH = ScalerInit(0, 255, 1740, 2430);
+    Scaler scalerV = ScalerInit(0, 255, 1780, 2330);
     printf("%s\n", "adc send start");
     // NRF_TX_Mode();
     // delay_ms(100);
@@ -21,7 +26,7 @@ static int send()
     u16 hval = 0;
     u16 vval = 0;
     while (1) {
-        printf("--------\n");
+        // printf("--------\n");
         delay_ms(100);
         ADC_DMA_Avg();
         /* 发送模式 */
@@ -30,6 +35,7 @@ static int send()
         // hval = ADC_VAL[0];
         // vval = &scaler, ADC_VAL[1];
         // //
+        // printf("hval:%d,vval:%d\n", ADC_VAL[0], ADC_VAL[1]);
         printf("hval:%d,vval:%d\n", hval, vval);
         // TX_BUF[0] = (uint8_t)hval;
         // TX_BUF[1] = (uint8_t)vval;
