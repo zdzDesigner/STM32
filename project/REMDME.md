@@ -45,3 +45,10 @@ GPIO_Pin_10: IRQ
 GPIO_Pin_11: CE 
 GPIO_Pin_12: CSN(NSS)
 ```
+
+
+
+
+- l298n
+**共地**和单片机
+正、负、PWM

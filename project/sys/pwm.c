@@ -57,7 +57,8 @@ void PWM_Config(void)
     GPIO_Init(GPIOC, &gpio);
 
     TIM_TimeBaseInitTypeDef tim;
-    tim.TIM_Period = 10000 - 1;
+    // tim.TIM_Period = 10000 - 1;
+    tim.TIM_Period = 0xFFFF - 1;
     tim.TIM_Prescaler = 0;
     tim.TIM_ClockDivision = TIM_CKD_DIV1;
     // tim.TIM_CounterMode   = TIM_CounterMode_Up;

@@ -5,6 +5,7 @@
 #include "usart.h"
 #include "util/scale.h"
 #include "oledv2/oled.h"
+#include "pwm.h"
 #include "spi.h"
 
 extern uint16_t ADC_VAL[2];
@@ -104,14 +105,55 @@ static int receive()
     OLED_ShowString(0, 2, "nrf24 to mcu ok");
     NRF_RX_Mode(); // NRF 进入接收模式
 
+    PWM_Config();
+    uint8_t cv = 20;
+
     while (1) {
         NRF_Rx_Dat(RX_BUF);
         uint8_t hval = RX_BUF[0];
         uint8_t vval = RX_BUF[1];
-        printf("%d,%d\n", hval, vval);
+        // printf("%d,%d\n", hval, vval);
         OLED_Clear();
         OLED_ShowNum(0, 0, hval, 5, 20);
         OLED_ShowNum(56, 0, vval, 4, 20);
+
+        // 前-左
+        // GPIO_SetBits(GPIOB, GPIO_Pin_8);
+        // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+        // // PWM
+        // if (hval > 125) {
+        //     if (hval > 240) {
+        //         cv = 0;
+        //     } else {
+        //         cv = 240 - hval;
+        //     }
+        //     PWM_Back();
+        // } else if (hval < 105) {
+        //     cv = hval;
+        //     PWM_Go();
+        // } else if (vval > 105 && vval < 125) {
+        //     PWM_Stop();
+        // }
+        //
+        // if (vval > 155) {
+        //     printf("vval:%d\n", vval);
+        //     if (vval > 240) {
+        //         cv = 20;
+        //     } else {
+        //         cv = (240 - vval) + 20;
+        //     }
+        //     PWM_Right();
+        // } else if (vval < 65) {
+        //     cv = vval + 20;
+        //     PWM_Left();
+        // }
+        //
+        cv = hval;
+        TIM_SetCompare1(TIM3, cv * cv);
+        TIM_SetCompare2(TIM3, cv * cv);
+        TIM_SetCompare3(TIM3, cv * cv);
+        TIM_SetCompare4(TIM3, cv * cv);
+        printf("%d\n", cv * cv);
     }
     return 0;
 }
