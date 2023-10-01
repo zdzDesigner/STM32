@@ -111,8 +111,7 @@ void OLED_Clear(void)
         OLED_WR_Byte(0xb0 + i, OLED_CMD); // 设置页地址（0~7）
         OLED_WR_Byte(0x00, OLED_CMD);     // 设置显示位置—列低地址
         OLED_WR_Byte(0x10, OLED_CMD);     // 设置显示位置—列高地址
-        for (n = 0; n < 128; n++)
-            OLED_WR_Byte(0, OLED_DATA);
+        for (n = 0; n < 128; n++) OLED_WR_Byte(0, OLED_DATA);
     } // 更新显示
 }
 
@@ -131,23 +130,19 @@ void OLED_ShowChar(u8 x, u8 y, u8 chr)
     }
     if (SIZE == 16) {
         OLED_Set_Pos(x, y);
-        for (i = 0; i < 8; i++)
-            OLED_WR_Byte(F8X16[c * 16 + i], OLED_DATA);
+        for (i = 0; i < 8; i++) OLED_WR_Byte(F8X16[c * 16 + i], OLED_DATA);
         OLED_Set_Pos(x, y + 1);
-        for (i = 0; i < 8; i++)
-            OLED_WR_Byte(F8X16[c * 16 + i + 8], OLED_DATA);
+        for (i = 0; i < 8; i++) OLED_WR_Byte(F8X16[c * 16 + i + 8], OLED_DATA);
     } else {
         OLED_Set_Pos(x, y + 1);
-        for (i = 0; i < 6; i++)
-            OLED_WR_Byte(F6x8[c][i], OLED_DATA);
+        for (i = 0; i < 6; i++) OLED_WR_Byte(F6x8[c][i], OLED_DATA);
     }
 }
 // m^n函数
 u32 oled_pow(u8 m, u8 n)
 {
     u32 result = 1;
-    while (n--)
-        result *= m;
+    while (n--) result *= m;
     return result;
 }
 // 显示2个数字
@@ -204,7 +199,7 @@ void OLED_ShowCHinese(u8 x, u8 y, u8 no)
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
 void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, unsigned char BMP[])
 {
-    unsigned int j = 0;
+    unsigned int  j = 0;
     unsigned char x, y;
 
     if (y1 % 8 == 0)
@@ -225,21 +220,34 @@ void OLED_ShowTest(u8 x, u8 y, char *chr)
     OLED_ShowString(x, y, chr);
 }
 
+void OLED_Demo()
+{
+    OLED_ShowNum(0, 0, 100, 4, 20);
+
+    OLED_ShowCHinese(30, 0, 0);
+    OLED_ShowCHinese(48, 0, 1);
+    OLED_ShowCHinese(66, 0, 2);
+    OLED_ShowCHinese(84, 0, 3);
+
+    OLED_ShowString(0, 4, "0.96' OLED TEST");
+    OLED_ShowString(8, 2, "ZHONGJINGYUAN");
+}
+
 // 初始化SSD1306
 void OLED_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); // 使能A端口时钟
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  // 推挽输出
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP; // 推挽输出
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // 速度50MHz
     GPIO_Init(GPIOA, &GPIO_InitStructure);            // 初始化GPIOD3,6
     GPIO_SetBits(GPIOA, GPIO_Pin_0);
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); // 使能A端口时钟
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_13;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  // 推挽输出
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_13;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP; // 推挽输出
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // 速度50MHz
     GPIO_Init(GPIOC, &GPIO_InitStructure);            // 初始化GPIOD3,6
     GPIO_SetBits(GPIOC, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_13);

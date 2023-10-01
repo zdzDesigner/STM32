@@ -118,15 +118,20 @@
 
 #define SPI_GPIO GPIOB
 #define SPI_GPIO_PIN GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15
+// #define SPI_GPIO_PIN GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13
 
 #define CSN_GPIO GPIOB
 #define CSN_GPIO_PIN GPIO_Pin_12
 
 #define CE_GPIO GPIOB
-#define CE_GPIO_PIN GPIO_Pin_11
+#define CE_GPIO_PIN GPIO_Pin_1
+// #define CE_GPIO_PIN GPIO_Pin_11
+
 
 #define IRQ_GPIO GPIOB
+// #define IRQ_GPIO_PIN GPIO_Pin_0
 #define IRQ_GPIO_PIN GPIO_Pin_10
+
 
 #define RCC_GPIO_ENABLE() RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 #define RCC_SPI_ENABLE() RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);

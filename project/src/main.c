@@ -4,13 +4,40 @@
 #include "nrf24/nrf24.h"
 #include "usart.h"
 #include "util/scale.h"
+#include "oledv2/oled.h"
+#include "spi.h"
 
 extern uint16_t ADC_VAL[2];
-extern uint8_t  TX_BUF[RX_PLOAD_WIDTH];
+extern uint8_t  TX_BUF[TX_PLOAD_WIDTH]; // 发射数据缓存
+extern uint8_t  RX_BUF[RX_PLOAD_WIDTH]; // 接收数据缓存
 
+static uint8_t boot_nrf24()
+{
+    // CHECK_SPI_Config();
+    SPI_NRF_Init();
+    delay_ms(100);
+
+    /*检测NRF模块与MCU的连接*/
+    printf("NRF_READ_REG:%d\n", SPI_NRF_ReadReg(NRF_READ_REG));
+    printf("CONFIG:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + CONFIG));
+    printf("STATUS:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + STATUS));
+
+    return NRF_Check();
+}
+
+/* 进入发送模式 */
 static int send()
 {
-    /* 进入发送模式 */
+
+    uint8_t status = boot_nrf24();
+    printf("status: %d\n", status);
+    while (status != SUCCESS) {
+        delay_ms(1000);
+        printf("\r\n NRF与MCU连接失败，请重新检查接线！\r\n");
+    }
+    NRF_TX_Mode();
+    delay_ms(100);
+
     ADC_Config();
     // old remote controller
     // Scaler scalerH = ScalerInit(0, 255, 1670, 2370);
@@ -20,7 +47,7 @@ static int send()
     Scaler scalerH = ScalerInit(0, 255, 1740, 2430);
     Scaler scalerV = ScalerInit(0, 255, 1780, 2330);
     printf("%s\n", "adc send start");
-    // NRF_TX_Mode();
+
     // delay_ms(100);
 
     u16 hval = 0;
@@ -32,53 +59,16 @@ static int send()
         /* 发送模式 */
         hval = scalerH.conv(&scalerH, ADC_VAL[0]);
         vval = scalerV.conv(&scalerV, ADC_VAL[1]);
-        // hval = ADC_VAL[0];
-        // vval = &scaler, ADC_VAL[1];
-        // //
+
         // printf("hval:%d,vval:%d\n", ADC_VAL[0], ADC_VAL[1]);
+
         printf("hval:%d,vval:%d\n", hval, vval);
-        // TX_BUF[0] = (uint8_t)hval;
-        // TX_BUF[1] = (uint8_t)vval;
-        // NRF_Tx_Dat(TX_BUF);
+        TX_BUF[0] = (uint8_t)hval;
+        TX_BUF[1] = (uint8_t)vval;
+        NRF_Tx_Dat(TX_BUF);
         // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
         // printf("send after status:%d\n", NrfStatus);
-    }
-    return 0;
-}
-
-static int send2()
-{
-    ADC_Config();
-    /* PWM_Config(); */
-    u16    ch4    = 0;
-    u16    ch5    = 0;
-    Scaler scaler = ScalerInit(0, 18000, 1740, 2400);
-    // Scaler scaler = ScalerInit(0, 18000, 0, 4095);
-    while (1) {
-        delay_ms(30);
-        // delay_ms_stk(1000);
-        // count++;
-        // printf("%ld\n",count);
-        // ch4 = ADC_AVG_Read(1000);
-        ch4 = ADC_AVG_ReadCh(ADC_Channel_4, 1000);
-        // ch4 = scaler.conv(&scaler, ch4);
-        ch5 = ADC_AVG_ReadCh(ADC_Channel_5, 1000);
-        // ch5 = scaler.conv(&scaler, ch5);
-        printf("--%d, %d\n", ch4, ch5);
-        // printf("--%d\n", ch4);
-        // printf("--\n");
-
-        // TIM_SetCompare1(TIM3, 0);
-        /* TIM_SetCompare1(TIM3, val); */
-        /* TIM_SetCompare2(TIM3, val); */
-        // TIM_SetCompare2(TIM3, 0);
-        // TIM_SetCompare2(TIM3, 10);
-        // TIM_SetCompare2(TIM3, 100);
-        // TIM_SetCompare2(TIM3, 500);
-        // TIM_SetCompare2(TIM3, 1000);
-        // TIM_SetCompare2(TIM3, 2000);
-        // TIM_SetCompare2(TIM3, 10000);
     }
     return 0;
 }
@@ -87,7 +77,41 @@ static int send_demo()
 {
     while (1) {
         delay_ms(30);
-        printf("ssssss\n");
+        printf("ssssss ccc\n");
+    }
+    return 0;
+}
+
+static int receive()
+{
+    OLED_Init();
+    OLED_Clear();
+    OLED_Demo();
+
+    uint8_t status = boot_nrf24();
+    printf("status: %d\n", status);
+    // 已初始的变量在常量区
+    char statusstr[]   = "status:x";
+    int  len           = sizeof(statusstr);
+    statusstr[len - 2] = status + 48;
+    OLED_Clear();
+    OLED_ShowString(0, 0, statusstr);
+
+    while (status != SUCCESS) {
+        delay_ms(1000);
+        printf("\r\n NRF与MCU连接失败，请重新检查接线！\r\n");
+    }
+    OLED_ShowString(0, 2, "nrf24 to mcu ok");
+    NRF_RX_Mode(); // NRF 进入接收模式
+
+    while (1) {
+        NRF_Rx_Dat(RX_BUF);
+        uint8_t hval = RX_BUF[0];
+        uint8_t vval = RX_BUF[1];
+        printf("%d,%d\n", hval, vval);
+        OLED_Clear();
+        OLED_ShowNum(0, 0, hval, 5, 20);
+        OLED_ShowNum(56, 0, vval, 4, 20);
     }
     return 0;
 }
@@ -128,7 +152,7 @@ int main()
     LED_GPIO_Config();
     LED_Open();
 
-    return send();
-    // return send2();
+    // return send();
     // return send_demo();
+    return receive();
 }

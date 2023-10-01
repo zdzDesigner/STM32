@@ -94,7 +94,7 @@ end)
 task("flash", function()
   on_run(function()
     print("******************** flash *****************************")
-    -- os.exec("JLinkExe -autoconnect 1 -device STM32F103C8 -if swd -speed 4000  -commandfile ./flash.jlink")
+    os.exec("JLinkExe -autoconnect 1 -device STM32F103C8 -if swd -speed 4000  -commandfile ./flash.jlink")
   end)
 end)
 

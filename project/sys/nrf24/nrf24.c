@@ -307,14 +307,14 @@ void NRF_RX_Mode(void)
 void NRF_TX_Mode(void)
 {
     NRF_CE_LOW();
-    SPI_NRF_WriteBuf(NRF_WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH); // 写TX节点地址
+    SPI_NRF_WriteBuf(NRF_WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // 写TX节点地址
     SPI_NRF_WriteBuf(NRF_WRITE_REG + RX_ADDR_P0, RX_ADDRESS, RX_ADR_WIDTH); // 设置TX节点地址,主要为了使能ACK
-    SPI_NRF_WriteReg(NRF_WRITE_REG + EN_AA, 0x01); // 使能通道0的自动应答
-    SPI_NRF_WriteReg(NRF_WRITE_REG + EN_RXADDR, 0x01); // 使能通道0的接收地址
-    SPI_NRF_WriteReg(NRF_WRITE_REG + SETUP_RETR, 0x1a); // 设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次
-    SPI_NRF_WriteReg(NRF_WRITE_REG + RF_CH, CHANAL); // 设置RF通道为CHANAL
-    SPI_NRF_WriteReg(NRF_WRITE_REG + RF_SETUP, 0x0f); // 设置TX发射参数,0db增益,2Mbps,低噪声增益开启
-    SPI_NRF_WriteReg(NRF_WRITE_REG + CONFIG, 0x0e); // 配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
+    SPI_NRF_WriteReg(NRF_WRITE_REG + EN_AA, 0x01);                          // 使能通道0的自动应答
+    SPI_NRF_WriteReg(NRF_WRITE_REG + EN_RXADDR, 0x01);                      // 使能通道0的接收地址
+    SPI_NRF_WriteReg(NRF_WRITE_REG + SETUP_RETR, 0x1a);                     // 设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次
+    SPI_NRF_WriteReg(NRF_WRITE_REG + RF_CH, CHANAL);                        // 设置RF通道为CHANAL
+    SPI_NRF_WriteReg(NRF_WRITE_REG + RF_SETUP, 0x0f);                       // 设置TX发射参数,0db增益,2Mbps,低噪声增益开启
+    SPI_NRF_WriteReg(NRF_WRITE_REG + CONFIG, 0x0e);                         // 配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
 
     /*CE拉高，进入发送模式*/
     NRF_CE_HIGH();
