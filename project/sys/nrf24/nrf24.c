@@ -349,6 +349,8 @@ uint8_t NRF_Tx_Dat(uint8_t *txbuf)
     NRF_CE_HIGH();
     // printf("FIFO_STATUS F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + NRF_FIFO_STATUS));
     // printf("STATUS F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + STATUS));
+    /* 读寄存器, 防止阻塞 */
+    SPI_NRF_ReadReg(NRF_READ_REG + STATUS);
     // printf("CONFIG F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + CONFIG));
     /*等待发送完成中断 */
     while (NRF_Read_IRQ() != 0) {}

@@ -46,7 +46,7 @@ static int send()
 
     // new remote controller
     Scaler scalerH = ScalerInit(0, 255, 1740, 2430);
-    Scaler scalerV = ScalerInit(0, 255, 1780, 2230);
+    Scaler scalerV = ScalerInit(0, 255, 1780, 2225);
     printf("%s\n", "adc send start");
 
     // delay_ms(100);
@@ -216,7 +216,7 @@ int main()
     LED_GPIO_Config();
     LED_Open();
 
-    return send();
+    // return send();
     // return send_demo();
-    // return receive();
+    return receive();
 }
