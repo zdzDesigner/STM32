@@ -46,7 +46,7 @@ static int send()
 
     // new remote controller
     Scaler scalerH = ScalerInit(0, 255, 1740, 2430);
-    Scaler scalerV = ScalerInit(0, 255, 1780, 2330);
+    Scaler scalerV = ScalerInit(0, 255, 1780, 2230);
     printf("%s\n", "adc send start");
 
     // delay_ms(100);
@@ -67,6 +67,7 @@ static int send()
         TX_BUF[0] = (uint8_t)hval;
         TX_BUF[1] = (uint8_t)vval;
         NRF_Tx_Dat(TX_BUF);
+
         // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
         // printf("send after status:%d\n", NrfStatus);
@@ -118,37 +119,58 @@ static int receive()
         OLED_ShowNum(56, 0, vval, 4, 20);
 
         // 前-左
-        // GPIO_SetBits(GPIOB, GPIO_Pin_8);
-        // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+        // GPIO_SetBits(GPIOA, GPIO_Pin_0);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_1);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_2);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_3);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_4);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_4);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_5);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_6);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+
+        // GPIO_SetBits(GPIOA, GPIO_Pin_7);
+        // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
         // // PWM
-        // if (hval > 125) {
-        //     if (hval > 240) {
-        //         cv = 0;
-        //     } else {
-        //         cv = 240 - hval;
-        //     }
-        //     PWM_Back();
-        // } else if (hval < 105) {
-        //     cv = hval;
-        //     PWM_Go();
-        // } else if (vval > 105 && vval < 125) {
-        //     PWM_Stop();
-        // }
+        if (hval > 130) {
+            cv = 255 - hval;
+            //     PWM_Right();
+        } else if (hval < 110) {
+            cv = hval;
+            //     PWM_Left();
+        } else if (hval >= 110 && hval <= 130) {
+            cv = 125;
+            // PWM_Stop();
+        }
+        if (vval > 130) {
+            cv = 255 - vval;
+            // PWM_Back();
+        } else if (vval < 110) {
+            cv = vval;
+            // PWM_Go();
+        } else if (vval >= 110 && vval <= 130) {
+            cv = 125;
+            // PWM_Stop();
+        }
+
         //
-        // if (vval > 155) {
-        //     printf("vval:%d\n", vval);
-        //     if (vval > 240) {
-        //         cv = 20;
-        //     } else {
-        //         cv = (240 - vval) + 20;
-        //     }
-        //     PWM_Right();
-        // } else if (vval < 65) {
-        //     cv = vval + 20;
-        //     PWM_Left();
-        // }
         //
-        cv = hval;
+        // cv = hval;
+        // TIM_SetCompare1(TIM3, 0); // 6
+        // TIM_SetCompare2(TIM3, 15000); // 7
+        // TIM_SetCompare3(TIM3, 30000); // 8
+        // TIM_SetCompare4(TIM3, 45000); // 9
         TIM_SetCompare1(TIM3, cv * cv);
         TIM_SetCompare2(TIM3, cv * cv);
         TIM_SetCompare3(TIM3, cv * cv);
@@ -194,7 +216,7 @@ int main()
     LED_GPIO_Config();
     LED_Open();
 
-    // return send();
+    return send();
     // return send_demo();
-    return receive();
+    // return receive();
 }

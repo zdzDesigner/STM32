@@ -32,16 +32,16 @@ void PWM_Config(void)
     // gpio.GPIO_Speed = GPIO_Speed_50MHz;
     // GPIO_Init(GPIOB, &gpio);
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
     GPIO_InitTypeDef gpioCtrl;
 
-    gpioCtrl.GPIO_Pin = PWM_CTRL_GPIO_Pin;
+    gpioCtrl.GPIO_Pin = PWM_CTRL_GPIO_Pin_Prev | PWM_CTRL_GPIO_Pin_Next;
     // gpioCtrl.GPIO_Mode = GPIO_Mode_IPU;
-    gpioCtrl.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpioCtrl.GPIO_Mode  = GPIO_Mode_Out_PP;
     gpioCtrl.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &gpioCtrl);
-    gpioCtrl.GPIO_Pin = PWM_CTRL_GPIO_Pin2;
-    GPIO_Init(GPIOB, &gpioCtrl);
+    // gpioCtrl.GPIO_Pin = PWM_CTRL_GPIO_Pin2;
+    // GPIO_Init(GPIOB, &gpioCtrl);
     PWM_Stop();
 
     // return
@@ -51,54 +51,54 @@ void PWM_Config(void)
     GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE); // PC6,PC7,PC8,PC9
     GPIO_InitTypeDef gpio;
 
-    gpio.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-    gpio.GPIO_Mode = GPIO_Mode_AF_PP;
+    gpio.GPIO_Pin   = PWM_GPIO_Pin;
+    gpio.GPIO_Mode  = GPIO_Mode_AF_PP;
     gpio.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &gpio);
 
     TIM_TimeBaseInitTypeDef tim;
     // tim.TIM_Period = 10000 - 1;
-    tim.TIM_Period = 0xFFFF - 1;
-    tim.TIM_Prescaler = 0;
+    tim.TIM_Period        = 125 * 125 - 1;
+    tim.TIM_Prescaler     = 0;
     tim.TIM_ClockDivision = TIM_CKD_DIV1;
     // tim.TIM_CounterMode   = TIM_CounterMode_Up;
     tim.TIM_CounterMode = TIM_CounterMode_Down;
     TIM_TimeBaseInit(TIM3, &tim);
 
     TIM_OCInitTypeDef timoc;
-    timoc.TIM_OCMode = TIM_OCMode_PWM2;             // 选择定时器模式:TIM脉冲宽度调制模式2
+    timoc.TIM_OCMode      = TIM_OCMode_PWM2;        // 选择定时器模式:TIM脉冲宽度调制模式2
     timoc.TIM_OutputState = TIM_OutputState_Enable; // 比较输出使能
-    timoc.TIM_OCPolarity = TIM_OCPolarity_High;     // 输出极性:TIM输出比较极性高
-    timoc.TIM_Pulse = 0;                            // 设置初始PWM脉冲宽度为0
+    timoc.TIM_OCPolarity  = TIM_OCPolarity_High;    // 输出极性:TIM输出比较极性高
+    timoc.TIM_Pulse       = 0;                      // 设置初始PWM脉冲宽度为0
     TIM_OC1Init(TIM3, &timoc);
 
-    timoc.TIM_OCMode = TIM_OCMode_PWM2;             // 选择定时器模式:TIM脉冲宽度调制模式2
+    timoc.TIM_OCMode      = TIM_OCMode_PWM2;        // 选择定时器模式:TIM脉冲宽度调制模式2
     timoc.TIM_OutputState = TIM_OutputState_Enable; // 比较输出使能
-    timoc.TIM_OCPolarity = TIM_OCPolarity_High;     // 输出极性:TIM输出比较极性高
-    timoc.TIM_Pulse = 0;                            // 设置初始PWM脉冲宽度为0
+    timoc.TIM_OCPolarity  = TIM_OCPolarity_High;    // 输出极性:TIM输出比较极性高
+    timoc.TIM_Pulse       = 0;                      // 设置初始PWM脉冲宽度为0
     TIM_OC2Init(TIM3, &timoc);
 
-    timoc.TIM_OCMode = TIM_OCMode_PWM2;             // 选择定时器模式:TIM脉冲宽度调制模式2
+    timoc.TIM_OCMode      = TIM_OCMode_PWM2;        // 选择定时器模式:TIM脉冲宽度调制模式2
     timoc.TIM_OutputState = TIM_OutputState_Enable; // 比较输出使能
-    timoc.TIM_OCPolarity = TIM_OCPolarity_High;     // 输出极性:TIM输出比较极性高
+    timoc.TIM_OCPolarity  = TIM_OCPolarity_High;    // 输出极性:TIM输出比较极性高
     // timoc.TIM_OCPolarity  = TIM_OCPolarity_Low;     //输出极性:TIM输出比较极性高 高位输出||低位输出
     timoc.TIM_Pulse = 0; // 设置初始PWM脉冲宽度为0
     // timoc.TIM_Pulse       = 1;                       //设置初始PWM脉冲宽度为 最初宽度（高电位）
     TIM_OC3Init(TIM3, &timoc);
 
-    timoc.TIM_OCMode = TIM_OCMode_PWM2;             // 选择定时器模式:TIM脉冲宽度调制模式2
+    timoc.TIM_OCMode      = TIM_OCMode_PWM2;        // 选择定时器模式:TIM脉冲宽度调制模式2
     timoc.TIM_OutputState = TIM_OutputState_Enable; // 比较输出使能
-    timoc.TIM_OCPolarity = TIM_OCPolarity_High;     // 输出极性:TIM输出比较极性高
-    timoc.TIM_Pulse = 0;                            // 设置初始PWM脉冲宽度为0
+    timoc.TIM_OCPolarity  = TIM_OCPolarity_High;    // 输出极性:TIM输出比较极性高
+    timoc.TIM_Pulse       = 0;                      // 设置初始PWM脉冲宽度为0
     TIM_OC4Init(TIM3, &timoc);
 
     // TIM_ICInit
 
     NVIC_InitTypeDef nvic;
-    nvic.NVIC_IRQChannel = TIM3_IRQn;
+    nvic.NVIC_IRQChannel                   = TIM3_IRQn;
     nvic.NVIC_IRQChannelPreemptionPriority = 2;
-    nvic.NVIC_IRQChannelSubPriority = 2;
-    nvic.NVIC_IRQChannelCmd = ENABLE;
+    nvic.NVIC_IRQChannelSubPriority        = 2;
+    nvic.NVIC_IRQChannelCmd                = ENABLE;
     NVIC_Init(&nvic);
 
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
@@ -127,56 +127,56 @@ void TIM3_IRQHandler()
 
 void PWM_Stop(void)
 {
-    GPIO_ResetBits(GPIOA, PWM_CTRL_GPIO_Pin);
-    GPIO_ResetBits(GPIOB, PWM_CTRL_GPIO_Pin2);
+    GPIO_ResetBits(GPIOA, PWM_CTRL_GPIO_Pin_Prev);
+    GPIO_ResetBits(GPIOA, PWM_CTRL_GPIO_Pin_Next);
 }
 
 void PWM_Go(void)
 {
-    // 后-右
-    GPIO_SetBits(GPIOA, GPIO_Pin_0);
-    GPIO_ResetBits(GPIOA, GPIO_Pin_1);
-    // 前-右
-    GPIO_SetBits(GPIOA, GPIO_Pin_2);
-    GPIO_ResetBits(GPIOA, GPIO_Pin_3);
-    // 前-左
-    GPIO_ResetBits(GPIOB, GPIO_Pin_8);
-    GPIO_SetBits(GPIOB, GPIO_Pin_9);
-    // 后-左
-    GPIO_ResetBits(GPIOA, GPIO_Pin_6);
-    GPIO_SetBits(GPIOA, GPIO_Pin_7);
+    // // 后-右
+    // GPIO_SetBits(GPIOA, GPIO_Pin_0);
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+    // // 前-右
+    // GPIO_SetBits(GPIOA, GPIO_Pin_2);
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+    // // 前-左
+    // GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+    // GPIO_SetBits(GPIOB, GPIO_Pin_9);
+    // // 后-左
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+    // GPIO_SetBits(GPIOA, GPIO_Pin_7);
 }
 
 void PWM_Back(void)
 {
-    // 后-右
-    GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-    GPIO_SetBits(GPIOA, GPIO_Pin_1);
-    // 前-右
-    GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-    GPIO_SetBits(GPIOA, GPIO_Pin_3);
-    // 前-左
-    GPIO_SetBits(GPIOB, GPIO_Pin_8);
-    GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-    // 后-左
-    GPIO_SetBits(GPIOA, GPIO_Pin_6);
-    GPIO_ResetBits(GPIOA, GPIO_Pin_7);
+    // // 后-右
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+    // GPIO_SetBits(GPIOA, GPIO_Pin_1);
+    // // 前-右
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+    // GPIO_SetBits(GPIOA, GPIO_Pin_3);
+    // // 前-左
+    // GPIO_SetBits(GPIOB, GPIO_Pin_8);
+    // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+    // // 后-左
+    // GPIO_SetBits(GPIOA, GPIO_Pin_6);
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
 void PWM_Left(void)
 {
-    PWM_Go();
-    // 前-左
-    GPIO_SetBits(GPIOB, GPIO_Pin_8);
-    GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+    // PWM_Go();
+    // // 前-左
+    // GPIO_SetBits(GPIOB, GPIO_Pin_8);
+    // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
 }
 
 void PWM_Right(void)
 {
-    PWM_Go();
-    // 前-右
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-    // GPIO_SetBits(GPIOA, GPIO_Pin_3);
-    GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-    GPIO_SetBits(GPIOA, GPIO_Pin_1);
+    // PWM_Go();
+    // // 前-右
+    // // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+    // // GPIO_SetBits(GPIOA, GPIO_Pin_3);
+    // GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+    // GPIO_SetBits(GPIOA, GPIO_Pin_1);
 }
