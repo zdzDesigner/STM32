@@ -53,6 +53,9 @@ GPIO_Pin_12: CSN(NSS)
 **共地**和单片机
 ```md
 一个电机: 正、负、PWM
+
+控制引脚(正反转):GPIOA0~7
+PWM:GPIOC6~9 (TM3, 完全映射)
 ```
 
 

@@ -107,7 +107,11 @@ static int receive()
     NRF_RX_Mode(); // NRF 进入接收模式
 
     PWM_Config();
-    uint8_t cv = 20;
+    uint8_t dir       = 0; // 0:h, h:v
+    uint8_t cv        = 125;
+    uint8_t ecv       = 125;
+    Scaler  scalerCV  = ScalerInit(80, 125, 0, 125);
+    Scaler  scalerECV = ScalerInit(20, 80, 0, 125);
 
     while (1) {
         NRF_Rx_Dat(RX_BUF);
@@ -142,40 +146,63 @@ static int receive()
 
         // GPIO_SetBits(GPIOA, GPIO_Pin_7);
         // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
+
+        if (hval > 130 && vval > 130) {
+            if (hval > vval) {
+                dir = 0;
+            } else {
+                dir = 1;
+            }
+        }
+        if (hval < 110 && vval < 110) {
+            if (hval < vval) {
+                dir = 0;
+            } else {
+                dir = 1;
+            }
+        }
         // // PWM
         if (hval > 130) {
             cv = 255 - hval;
-            //     PWM_Right();
+            PWM_Right();
         } else if (hval < 110) {
             cv = hval;
-            //     PWM_Left();
-        } else if (hval >= 110 && hval <= 130) {
-            cv = 125;
-            // PWM_Stop();
+            PWM_Left();
         }
         if (vval > 130) {
             cv = 255 - vval;
-            // PWM_Back();
+            PWM_Back();
         } else if (vval < 110) {
             cv = vval;
-            // PWM_Go();
-        } else if (vval >= 110 && vval <= 130) {
-            cv = 125;
-            // PWM_Stop();
+            PWM_Go();
         }
+
+        if (hval >= 110 && hval <= 130 && vval >= 110 && vval <= 130) {
+            cv = 125;
+            PWM_Stop();
+        }
+
+        cv  = scalerCV.conv(&scalerCV, cv);
+        ecv = scalerCV.conv(&scalerECV, cv) / 20;
 
         //
         //
         // cv = hval;
-        // TIM_SetCompare1(TIM3, 0); // 6
+        TIM_SetCompare1(TIM3, 0); // 6
         // TIM_SetCompare2(TIM3, 15000); // 7
         // TIM_SetCompare3(TIM3, 30000); // 8
         // TIM_SetCompare4(TIM3, 45000); // 9
-        TIM_SetCompare1(TIM3, cv * cv);
+        // TIM_SetCompare1(TIM3, ecv * ecv); // L298n左边怀了
         TIM_SetCompare2(TIM3, cv * cv);
         TIM_SetCompare3(TIM3, cv * cv);
         TIM_SetCompare4(TIM3, cv * cv);
-        printf("%d\n", cv * cv);
+        // TIM_SetCompare1(TIM3, 0);
+        // TIM_SetCompare2(TIM3, 0);
+        // TIM_SetCompare3(TIM3, 0);
+        // TIM_SetCompare4(TIM3, 0);
+        printf("%d\n", cv);
+        OLED_ShowNum(0, 3, cv, 4, 20);
+        OLED_ShowNum(0, 5, ecv, 4, 20);
     }
     return 0;
 }

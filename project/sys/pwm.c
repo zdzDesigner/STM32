@@ -133,50 +133,64 @@ void PWM_Stop(void)
 
 void PWM_Go(void)
 {
-    // // 后-右
-    // GPIO_SetBits(GPIOA, GPIO_Pin_0);
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_1);
-    // // 前-右
-    // GPIO_SetBits(GPIOA, GPIO_Pin_2);
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_3);
     // // 前-左
-    // GPIO_ResetBits(GPIOB, GPIO_Pin_8);
-    // GPIO_SetBits(GPIOB, GPIO_Pin_9);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+    GPIO_SetBits(GPIOA, GPIO_Pin_1);
+    // // 前-右
+    GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+    GPIO_SetBits(GPIOA, GPIO_Pin_3);
     // // 后-左
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_6);
-    // GPIO_SetBits(GPIOA, GPIO_Pin_7);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_4);
+    GPIO_SetBits(GPIOA, GPIO_Pin_5);
+    // // 后-右
+    GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+    GPIO_SetBits(GPIOA, GPIO_Pin_7);
 }
 
 void PWM_Back(void)
 {
-    // // 后-右
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-    // GPIO_SetBits(GPIOA, GPIO_Pin_1);
-    // // 前-右
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-    // GPIO_SetBits(GPIOA, GPIO_Pin_3);
     // // 前-左
-    // GPIO_SetBits(GPIOB, GPIO_Pin_8);
-    // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+    GPIO_SetBits(GPIOA, GPIO_Pin_0);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+    // // 前-右
+    GPIO_SetBits(GPIOA, GPIO_Pin_2);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_3);
     // // 后-左
-    // GPIO_SetBits(GPIOA, GPIO_Pin_6);
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
+    GPIO_SetBits(GPIOA, GPIO_Pin_4);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+    // // 后-右
+    GPIO_SetBits(GPIOA, GPIO_Pin_6);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
 void PWM_Left(void)
 {
-    // PWM_Go();
-    // // 前-左
-    // GPIO_SetBits(GPIOB, GPIO_Pin_8);
-    // GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+    // 后 // 前-左
+    GPIO_SetBits(GPIOA, GPIO_Pin_0);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+    // 前 // 前-右
+    GPIO_ResetBits(GPIOA, GPIO_Pin_2);
+    GPIO_SetBits(GPIOA, GPIO_Pin_3);
+    // 前 // 后-左
+    GPIO_ResetBits(GPIOA, GPIO_Pin_4);
+    GPIO_SetBits(GPIOA, GPIO_Pin_5);
+    // 后 // 后-右
+    GPIO_SetBits(GPIOA, GPIO_Pin_6);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 }
 
 void PWM_Right(void)
 {
-    // PWM_Go();
-    // // 前-右
-    // // GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-    // // GPIO_SetBits(GPIOA, GPIO_Pin_3);
-    // GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-    // GPIO_SetBits(GPIOA, GPIO_Pin_1);
+    // 前 // 前-左
+    GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+    GPIO_SetBits(GPIOA, GPIO_Pin_1);
+    // 后 // 前-右
+    GPIO_SetBits(GPIOA, GPIO_Pin_2);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_3);
+    // 后 // 后-左
+    GPIO_SetBits(GPIOA, GPIO_Pin_4);
+    GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+    // 前 // 后-右
+    GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+    GPIO_SetBits(GPIOA, GPIO_Pin_7);
 }
