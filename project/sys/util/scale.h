@@ -8,7 +8,7 @@ typedef struct scaler {
     unsigned max;                           // 实际最高值
     int      factor;                        // 比例系数
     int (*factor_get)(struct scaler *);      // 系数生成器
-    int (*conv)(struct scaler *, unsigned); // 转换值
+    int (*conv)(struct scaler *, int); // 转换值
 } Scaler;
 
 Scaler ScalerInit(unsigned refmin, unsigned refmax, unsigned min, unsigned max);

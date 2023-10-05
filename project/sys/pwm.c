@@ -1,7 +1,7 @@
 #include "stm32f10x_rcc.h"
 #include "pwm.h"
 
-void PWM_Config(void)
+void PWM_Config(int version)
 {
     // TIMx_CCMR  [capture compare manage registe] 比较捕获寄存器
     // OC
@@ -46,15 +46,31 @@ void PWM_Config(void)
 
     // return
 
-    // 完全重映射
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO | RCC_APB2Periph_GPIOC, ENABLE);
-    GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE); // PC6,PC7,PC8,PC9
-    GPIO_InitTypeDef gpio;
+    if (version == 1) {
+        // 完全重映射
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO | RCC_APB2Periph_GPIOC, ENABLE);
+        GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE); // PC6,PC7,PC8,PC9
+        GPIO_InitTypeDef gpio;
 
-    gpio.GPIO_Pin   = PWM_GPIO_Pin;
-    gpio.GPIO_Mode  = GPIO_Mode_AF_PP;
-    gpio.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &gpio);
+        gpio.GPIO_Pin   = PWM_GPIO_Pin;
+        gpio.GPIO_Mode  = GPIO_Mode_AF_PP;
+        gpio.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_Init(GPIOC, &gpio);
+    }
+    if (version == 2) {
+
+        // 部分重映射, 使能RCC_APB2Periph_AFIO , RCC_APB2Periph_GPIOB
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO | RCC_APB2Periph_GPIOB, ENABLE);
+        GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE); // PB4,PB5,PB0,PB1
+        GPIO_InitTypeDef gpio;
+
+        gpio.GPIO_Pin   = PWM_GPIO_Pin_2;
+        gpio.GPIO_Mode  = GPIO_Mode_AF_PP;
+        gpio.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_Init(GPIOB, &gpio);
+    }
+
+    // timer ======================================
 
     TIM_TimeBaseInitTypeDef tim;
     // tim.TIM_Period = 10000 - 1;

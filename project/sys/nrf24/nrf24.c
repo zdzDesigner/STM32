@@ -350,14 +350,14 @@ uint8_t NRF_Tx_Dat(uint8_t *txbuf)
     // printf("FIFO_STATUS F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + NRF_FIFO_STATUS));
     // printf("STATUS F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + STATUS));
     /* 读寄存器, 防止阻塞 */
-    SPI_NRF_ReadReg(NRF_READ_REG + STATUS);
+    // SPI_NRF_ReadReg(NRF_READ_REG + STATUS);
     // printf("CONFIG F:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + CONFIG));
     /*等待发送完成中断 */
     while (NRF_Read_IRQ() != 0) {}
 
     /*读取状态寄存器的值 */
     state = SPI_NRF_ReadReg(STATUS);
-    // printf("FIFO_STATUS R:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + NRF_FIFO_STATUS));
+    // printf("FIFO_STATUS R:%d\n", state);
     // printf("STATUS R:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + STATUS));
     // printf("CONFIG R:%d\n", SPI_NRF_ReadReg(NRF_READ_REG + CONFIG));
     /*清除TX_DS或MAX_RT中断标志*/

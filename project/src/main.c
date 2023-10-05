@@ -6,6 +6,7 @@
 #include "util/scale.h"
 #include "oledv2/oled.h"
 #include "pwm.h"
+#include "ws2812b.h"
 #include "spi.h"
 
 extern uint16_t ADC_VAL[2];
@@ -45,8 +46,8 @@ static int send()
     // Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
 
     // new remote controller
-    Scaler scalerH = ScalerInit(0, 255, 1740, 2430);
-    Scaler scalerV = ScalerInit(0, 255, 1780, 2225);
+    Scaler scalerH = ScalerInit(0, 255, 1750, 2430);
+    Scaler scalerV = ScalerInit(0, 255, 1730, 2255);
     printf("%s\n", "adc send start");
 
     // delay_ms(100);
@@ -103,10 +104,11 @@ static int receive()
         delay_ms(1000);
         printf("\r\n NRF与MCU连接失败，请重新检查接线！\r\n");
     }
+    printf("status: %s\n", "nrf24 to mcu ok");
     OLED_ShowString(0, 2, "nrf24 to mcu ok");
     NRF_RX_Mode(); // NRF 进入接收模式
 
-    PWM_Config();
+    PWM_Config(1);
     uint8_t dir       = 0; // 0:h, h:v
     uint8_t cv        = 125;
     uint8_t ecv       = 125;
@@ -147,63 +149,108 @@ static int receive()
         // GPIO_SetBits(GPIOA, GPIO_Pin_7);
         // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 
-        if (hval > 130 && vval > 130) {
+        if (hval > 130 && vval > 110) {
             if (hval > vval) {
                 dir = 0;
             } else {
                 dir = 1;
             }
         }
-        if (hval < 110 && vval < 110) {
+        if (hval < 130 && vval < 110) {
             if (hval < vval) {
                 dir = 0;
             } else {
                 dir = 1;
             }
         }
-        // // PWM
-        if (hval > 130) {
-            cv = 255 - hval;
-            PWM_Right();
-        } else if (hval < 110) {
-            cv = hval;
-            PWM_Left();
+        if (dir == 0) {
+            // // PWM
+            if (hval > 130) {
+                cv = 255 - hval;
+                PWM_Right();
+            } else if (hval < 110) {
+                cv = hval;
+                PWM_Left();
+            }
+            OLED_ShowString(56, 5, "H");
         }
-        if (vval > 130) {
-            cv = 255 - vval;
-            PWM_Back();
-        } else if (vval < 110) {
-            cv = vval;
-            PWM_Go();
+        if (dir == 1) {
+            if (vval > 130) {
+                cv = 255 - vval;
+                PWM_Back();
+            } else if (vval < 110) {
+                cv = vval;
+                PWM_Go();
+            }
+            OLED_ShowString(56, 5, "V");
         }
-
         if (hval >= 110 && hval <= 130 && vval >= 110 && vval <= 130) {
-            cv = 125;
+            hval = 0;
+            vval = 0;
+            cv   = 125;
             PWM_Stop();
+            OLED_ShowString(0, 5, "STOP");
         }
 
         cv  = scalerCV.conv(&scalerCV, cv);
         ecv = scalerCV.conv(&scalerECV, cv) / 20;
 
-        //
-        //
         // cv = hval;
-        TIM_SetCompare1(TIM3, 0); // 6
-        // TIM_SetCompare2(TIM3, 15000); // 7
-        // TIM_SetCompare3(TIM3, 30000); // 8
-        // TIM_SetCompare4(TIM3, 45000); // 9
-        // TIM_SetCompare1(TIM3, ecv * ecv); // L298n左边怀了
+        TIM_SetCompare1(TIM3, ecv * ecv); // L298n左边怀了
         TIM_SetCompare2(TIM3, cv * cv);
         TIM_SetCompare3(TIM3, cv * cv);
         TIM_SetCompare4(TIM3, cv * cv);
-        // TIM_SetCompare1(TIM3, 0);
-        // TIM_SetCompare2(TIM3, 0);
-        // TIM_SetCompare3(TIM3, 0);
-        // TIM_SetCompare4(TIM3, 0);
+
         printf("%d\n", cv);
         OLED_ShowNum(0, 3, cv, 4, 20);
-        OLED_ShowNum(0, 5, ecv, 4, 20);
+        // OLED_ShowNum(0, 5, ecv, 4, 20);
     }
+    return 0;
+}
+
+static int receive_demo()
+{
+    PWM_Config(2);
+    uint16_t v    = 0;
+    uint8_t  step = 0;
+    while (1) {
+        // TIM_SetCompare2(TIM3, 125 * 125); // PB1
+        delay_ms(20000);
+        TIM_SetCompare2(TIM3, 125 * 125); // PB1
+        // GPIO_SetBits(GPIOB, GPIO_Pin_5);
+        // TIM_SetCompare1(TIM3, 0); // PB4
+        // TIM_SetCompare2(TIM3, 0); // PB5
+        // TIM_SetCompare3(TIM3, 0); // PB0
+        // TIM_SetCompare4(TIM3, 0); // PB1
+
+        delay_ms(20000);
+        v = 125 * 5 * step;
+        TIM_SetCompare2(TIM3, v); // PB1
+
+        // if (step == 0) {
+        //     TIM_SetCompare2(TIM3, 0); // PB5
+        //     step++;
+        // } else if (step == 1) {
+        //     TIM_SetCompare2(TIM3, 125 * 125 / 3); // PB5
+        //     step++;
+        // } else if (step == 2) {
+        //     TIM_SetCompare2(TIM3, 125 * 125 / 2); // PB5
+        //     step++;
+        // } else if (step == 3) {
+        //     TIM_SetCompare2(TIM3, 125 * 125); // PB1
+        //     step = 0;
+        // }
+        step++;
+        if (step > 25) step = 0;
+        printf("%d\n", v);
+    }
+    return 0;
+}
+
+static int ws2812b()
+{
+    WS2812B_Init();
+    WS2812B_ON();
     return 0;
 }
 
@@ -245,5 +292,7 @@ int main()
 
     // return send();
     // return send_demo();
-    return receive();
+    // return receive();
+    // return receive_demo();
+    return ws2812b();
 }

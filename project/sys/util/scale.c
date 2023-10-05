@@ -5,16 +5,24 @@ static int factor_get(Scaler *s)
     return (int)(s->refmax - s->refmin) * 1000 / (int)(s->max - s->min);
 }
 
-static int conv(Scaler *s, unsigned val)
+static int conv(Scaler *s, int val)
 {
     if (s->factor == 0) {
         s->factor = s->factor_get(s);
     }
-    int nval = val - s->min;                   // 以真实最小值为基准, 得到当前值
-    nval     = (int)(s->factor * nval) / 1000; // 乘以比例因子
-    nval     = nval + s->refmin;
-    if (nval < s->refmin) return s->refmin; // 最小值
-    if (nval > s->refmax) return s->refmax; // 最大值
+
+    int refmin = s->refmin;
+    int refmax = s->refmax;
+
+    int nval = val - s->min; // 以真实最小值为基准, 得到当前值
+    // nval = nval < 0 ? 0 : nval;
+
+    nval = (int)(s->factor * nval) / 1000; // 乘以比例因子
+    nval = nval + refmin;
+
+    // printf("%d,refmin:%d,:%d\n", nval, refmin, nval < refmin);
+    if (nval <= refmin) return refmin; // 最小值
+    if (nval >= refmax) return refmax; // 最大值
     return nval;
 
     // int nval = val - s->min; // 以真实最小值为基准, 得到当前值
