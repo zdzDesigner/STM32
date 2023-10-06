@@ -1,91 +1,111 @@
 [
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m0plus", "-x", "assembler-with-cpp", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/startup_stm32f103xb.s.o", "startup_stm32f103xb.s"],
-  "file": "startup_stm32f103xb.s"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/key/key.c.o", "src/key/key.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/key/key.c.o", "src/key/key.c"],
   "file": "src/key/key.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/stm32f10x_it.c.o", "src/stm32f10x_it.c"],
-  "file": "src/stm32f10x_it.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/led/led2.c.o", "src/led/led2.c"],
-  "file": "src/led/led2.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/led/led.c.o", "src/led/led.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/led/led.c.o", "src/led/led.c"],
   "file": "src/led/led.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/main.c.o", "src/main.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/led/led2.c.o", "src/led/led2.c"],
+  "file": "src/led/led2.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/stm32f10x_it.c.o", "src/stm32f10x_it.c"],
+  "file": "src/stm32f10x_it.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/ws2812b/ws2812b.c.o", "src/ws2812b/ws2812b.c"],
+  "file": "src/ws2812b/ws2812b.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/util/delay.c.o", "src/util/delay.c"],
+  "file": "src/util/delay.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/util/usart.c.o", "src/util/usart.c"],
+  "file": "src/util/usart.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/util/printf.c.o", "src/util/printf.c"],
+  "file": "src/util/printf.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/src/main.c.o", "src/main.c"],
   "file": "src/main.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/CMSIS/system_stm32f10x.c.o", "lib/CMSIS/system_stm32f10x.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/CMSIS/system_stm32f10x.c.o", "lib/CMSIS/system_stm32f10x.c"],
   "file": "lib/CMSIS/system_stm32f10x.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c"
-},
-{
-  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/misc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/misc.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/misc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/misc.c"],
   "file": "lib/STM32F10x_StdPeriph_Driver/src/misc.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c"],
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c"],
   "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c"
 },
 {
   "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
-  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c"],
-  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c"
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m3", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c.o", "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c"],
+  "file": "lib/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c"
+},
+{
+  "directory": "/home/zdz/Documents/Try/IOT/STM32/course/debug",
+  "arguments": ["/usr/bin/arm-none-eabi-gcc", "-c", "-Isrc", "-Isrc/key", "-Isrc/led", "-Isrc/ws2812b", "-Isrc/util", "-Ilib/CMSIS", "-Ilib/STM32F10x_StdPeriph_Driver/inc", "-DSTM32F10X_LD", "-DUSE_STDPERIPH_DRIVER", "-Og", "-mthumb", "-mcpu=cortex-m0plus", "-x", "assembler-with-cpp", "-Wall", "-fdata-sections", "-ffunction-sections", "-g3", "-gdwarf-2", "-o", "build/.objs/stm32/linux/x86_64/release/startup_stm32f103xb.s.o", "startup_stm32f103xb.s"],
+  "file": "startup_stm32f103xb.s"
 }]

@@ -4,7 +4,5 @@
 void WS2812B_OFF(void);
 void WS2812B_ON(void);
 void WS2812B_Init(void);
-void WS2812B_Gradient(void);
-
 
 #endif

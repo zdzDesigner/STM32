@@ -9,6 +9,7 @@ mon reset halt
 maintenance flush register-cache
 # flushregs
 break main
+break src/ws2812b/ws2812b.c:13
 # load
 # run
 c

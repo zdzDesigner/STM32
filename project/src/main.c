@@ -8,6 +8,7 @@
 #include "pwm.h"
 #include "ws2812b.h"
 #include "spi.h"
+#include <stdint.h>
 
 extern uint16_t ADC_VAL[2];
 extern uint8_t  TX_BUF[TX_PLOAD_WIDTH]; // 发射数据缓存
@@ -46,8 +47,11 @@ static int send()
     // Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
 
     // new remote controller
-    Scaler scalerH = ScalerInit(0, 255, 1750, 2430);
-    Scaler scalerV = ScalerInit(0, 255, 1730, 2255);
+    Scaler scalerH = ScalerInit(0, 255, 1720, 2370);
+    Scaler scalerV = ScalerInit(0, 255, 1740, 2355);
+    // 2 ====
+    // Scaler scalerH = ScalerInit(0, 255, 1750, 2430);
+    // Scaler scalerV = ScalerInit(0, 255, 1730, 2255);
     printf("%s\n", "adc send start");
 
     // delay_ms(100);
@@ -55,6 +59,8 @@ static int send()
     u16 hval = 0;
     u16 vval = 0;
     while (1) {
+        WS2812B_ON();
+
         // printf("--------\n");
         delay_ms(100);
         ADC_DMA_Avg();
@@ -115,6 +121,9 @@ static int receive()
     Scaler  scalerCV  = ScalerInit(80, 125, 0, 125);
     Scaler  scalerECV = ScalerInit(20, 80, 0, 125);
 
+    uint8_t stop_min = 105;
+    uint8_t stop_max = 150;
+
     while (1) {
         NRF_Rx_Dat(RX_BUF);
         uint8_t hval = RX_BUF[0];
@@ -149,14 +158,14 @@ static int receive()
         // GPIO_SetBits(GPIOA, GPIO_Pin_7);
         // GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 
-        if (hval > 130 && vval > 110) {
+        if (hval > stop_max && vval > stop_min) {
             if (hval > vval) {
                 dir = 0;
             } else {
                 dir = 1;
             }
         }
-        if (hval < 130 && vval < 110) {
+        if (hval < stop_max && vval < stop_min) {
             if (hval < vval) {
                 dir = 0;
             } else {
@@ -165,26 +174,26 @@ static int receive()
         }
         if (dir == 0) {
             // // PWM
-            if (hval > 130) {
+            if (hval > stop_max) {
                 cv = 255 - hval;
                 PWM_Right();
-            } else if (hval < 110) {
+            } else if (hval < stop_min) {
                 cv = hval;
                 PWM_Left();
             }
             OLED_ShowString(56, 5, "H");
         }
         if (dir == 1) {
-            if (vval > 130) {
+            if (vval > stop_max) {
                 cv = 255 - vval;
                 PWM_Back();
-            } else if (vval < 110) {
+            } else if (vval < stop_min) {
                 cv = vval;
                 PWM_Go();
             }
             OLED_ShowString(56, 5, "V");
         }
-        if (hval >= 110 && hval <= 130 && vval >= 110 && vval <= 130) {
+        if (hval >= stop_min && hval <= stop_max && vval >= stop_min && vval <= stop_max) {
             hval = 0;
             vval = 0;
             cv   = 125;
@@ -216,7 +225,7 @@ static int receive_demo()
     while (1) {
         // TIM_SetCompare2(TIM3, 125 * 125); // PB1
         delay_ms(20000);
-        TIM_SetCompare2(TIM3, 125 * 125); // PB1
+        // TIM_SetCompare2(TIM3, 125 * 125); // PB1
         // GPIO_SetBits(GPIOB, GPIO_Pin_5);
         // TIM_SetCompare1(TIM3, 0); // PB4
         // TIM_SetCompare2(TIM3, 0); // PB5
@@ -250,8 +259,6 @@ static int receive_demo()
 static int ws2812b()
 {
     WS2812B_Init();
-    WS2812B_ON();
-    return 0;
 }
 
 static void Delay(uint32_t nTime)
@@ -289,10 +296,11 @@ int main()
     PRINT_Config();
     LED_GPIO_Config();
     LED_Open();
+    // ws2812b();
 
     // return send();
     // return send_demo();
-    // return receive();
+    return receive();
     // return receive_demo();
-    return ws2812b();
+    // return WS2812B_Gradient();
 }

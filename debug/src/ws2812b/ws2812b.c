@@ -1,3 +1,4 @@
+#include <string.h>
 #include "stm32f10x_rcc.h"
 #include "ws2812b.h"
 
@@ -81,9 +82,9 @@ void WS2812B_send(uint32_t GRB_Data) // 发送颜色数据 0X 00 00 00
     DMA_Cmd(DMA_CHANNEL, ENABLE);                        // 使能DMA，开始传输
     TIM_Cmd(TIM2, ENABLE);                               // 使能定时器
 
-    // printf("xxxxxxx\n");
+    printf("xxxxxxx\n");
     while (!DMA_GetFlagStatus(DMA_FLAG_TC)) {} // 等待传输完成
-    // printf("xxxxxxx end\n");
+    printf("xxxxxxx end\n");
     TIM_Cmd(TIM2, DISABLE);
     DMA_Cmd(DMA_CHANNEL, DISABLE); // 关闭DMA
     DMA_ClearFlag(DMA_FLAG_TC);    // 清除DMA标志位
@@ -96,56 +97,63 @@ void WS2812B_OFF(void)
 
 void WS2812B_ON(void)
 {
-    WS2812B_send(0XFFFF00);
-}
-void WS2812B_Gradient(void)
-{
-    uint8_t step = 0;
-    // while (1) {
-    //     WS2812B_send(step << 8);
-    //     delay_ms(50);
-    //     step++;
-    //     if (step > 0xFF00) step = 0;
-    // }
+    uint8_t step  = 0;
+    char   *color = "blue";
+    // red ==========
+    if (0 == strcmp(color, "red")) {
+        while (1) {
+            WS2812B_send(step << 8);
+            delay_ms(50);
+            step++;
+            if (step > 0xFF00) step = 0;
+        }
+    }
+
+    // blue ==========
+    if (0 == strcmp(color , "blue")) {
+        while (1) {
+            WS2812B_send(step);
+            delay_ms(50);
+            step++;
+            if (step > 0xFF) step = 0;
+        }
+    }
+
+    // green ==========
     while (1) {
-        WS2812B_send(step);
+        WS2812B_send(step << 16);
         delay_ms(50);
         step++;
-        if (step > 0xFF) step = 0;
+        if (step > 0xFF0000) step = 0;
     }
-    // while (1) {
-    //     WS2812B_send(step << 16);
-    //     delay_ms(50);
-    //     step++;
-    //     if (step > 0xFF0000) step = 0;
-    // }
-    // delay_ms(50);
-    // WS2812B_send(0X00AA00);
-    // delay_ms(50);
-    // WS2812B_send(0X00FF00);
-    // delay_ms(50);
-
-    // WS2812B_send(0X7FFF00);
-    // delay_ms(50);
-
-    // WS2812B_send(0XFFFF00);
-    // delay_ms(50);
-
-    // WS2812B_send(0XFF0000);
-    // delay_ms(50);
-
-    // WS2812B_send(0XFF00FF);
-    // delay_ms(50);
-
-    // WS2812B_send(0X0000FF);
-    // delay_ms(50);
-
-    // WS2812B_send(0X008BFF);
-    // delay_ms(50);
-
-    // WS2812B_send(0XFFFFFF);
-    // delay_ms(50);
-
-    // WS2812B_send(0X000000);
-    // delay_ms(50);
 }
+
+// delay_ms(50);
+// WS2812B_send(0X00AA00);
+// delay_ms(50);
+// WS2812B_send(0X00FF00);
+// delay_ms(50);
+
+// WS2812B_send(0X7FFF00);
+// delay_ms(50);
+
+// WS2812B_send(0XFFFF00);
+// delay_ms(50);
+
+// WS2812B_send(0XFF0000);
+// delay_ms(50);
+
+// WS2812B_send(0XFF00FF);
+// delay_ms(50);
+
+// WS2812B_send(0X0000FF);
+// delay_ms(50);
+
+// WS2812B_send(0X008BFF);
+// delay_ms(50);
+
+// WS2812B_send(0XFFFFFF);
+// delay_ms(50);
+
+// WS2812B_send(0X000000);
+// delay_ms(50);

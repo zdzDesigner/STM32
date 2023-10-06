@@ -23,6 +23,8 @@ target("stm32", function()
     "./src",
     "./src/key",
     "./src/led",
+    "./src/ws2812b",
+    "./src/util",
     "./lib/CMSIS",
     "./lib/STM32F10x_StdPeriph_Driver/inc"
   )
