@@ -32,6 +32,8 @@ static uint8_t boot_nrf24()
 static int send()
 {
 
+    WS2812B_Init();
+
     uint8_t status = boot_nrf24();
     printf("status: %d\n", status);
     while (status != SUCCESS) {
@@ -47,7 +49,7 @@ static int send()
     // Scaler scalerV = ScalerInit(0, 255, 1710, 2380);
 
     // new remote controller
-    Scaler scalerH = ScalerInit(0, 255, 1720, 2370);
+    Scaler scalerH = ScalerInit(0, 255, 1730, 2370);
     Scaler scalerV = ScalerInit(0, 255, 1740, 2355);
     // 2 ====
     // Scaler scalerH = ScalerInit(0, 255, 1750, 2430);
@@ -59,10 +61,11 @@ static int send()
     u16 hval = 0;
     u16 vval = 0;
     while (1) {
-        WS2812B_ON();
+        // WS2812B_ON();
+        // WS2812B_Color("red");
 
         // printf("--------\n");
-        delay_ms(100);
+        delay_ms(50);
         ADC_DMA_Avg();
         /* 发送模式 */
         hval = scalerH.conv(&scalerH, ADC_VAL[0]);
@@ -73,7 +76,9 @@ static int send()
         printf("hval:%d,vval:%d\n", hval, vval);
         TX_BUF[0] = (uint8_t)hval;
         TX_BUF[1] = (uint8_t)vval;
+        // delay_ms(100);
         NRF_Tx_Dat(TX_BUF);
+        WS2812B_Compute((uint8_t)hval, (uint8_t)vval);
 
         // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
@@ -256,11 +261,6 @@ static int receive_demo()
     return 0;
 }
 
-static int ws2812b()
-{
-    WS2812B_Init();
-}
-
 static void Delay(uint32_t nTime)
 {
     while (nTime--) {}
@@ -296,11 +296,11 @@ int main()
     PRINT_Config();
     LED_GPIO_Config();
     LED_Open();
-    // ws2812b();
+    // WS2812B_Gradient();
 
-    // return send();
+    return send();
     // return send_demo();
-    return receive();
+    // return receive();
     // return receive_demo();
     // return WS2812B_Gradient();
 }

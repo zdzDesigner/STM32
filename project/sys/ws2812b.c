@@ -1,3 +1,5 @@
+// #include <strings.h>
+#include "delay.h"
 #include "stm32f10x_rcc.h"
 #include "ws2812b.h"
 
@@ -73,8 +75,10 @@ void WS2812B_send(uint32_t GRB_Data) // 发送颜色数据 0X 00 00 00
             } else {
                 LED_Buffer[z] = 25; // 0
             }
+            // printf("%d ", LED_Buffer[z]);
             z++;
         }
+        // printf("\n");
     }
 
     DMA_SetCurrDataCounter(DMA_CHANNEL, LIGHT_BYTE_LEN); // 给传输计数器写数据，需要传送多少个数据
@@ -93,13 +97,77 @@ void WS2812B_OFF(void)
 {
     WS2812B_send(0X000000);
 }
+void WS2812B_Compute(uint8_t hval, uint8_t vval)
+{
 
+    if (hval < 140 && hval > 110 && vval > 110 && vval < 140) {
+        WS2812B_OFF();
+        return;
+    }
+
+    // uint32_t val = 0;
+    WS2812B_send((hval << 8) + vval);
+
+    // if (hval > 140) {
+    //     WS2812B_Color("red");
+    // }
+    // if (hval < 110) {
+    //     WS2812B_Color("yellow");
+    // }
+    // if (vval > 140) {
+    //     WS2812B_Color("purple");
+    // }
+    // if (vval < 110) {
+    //     WS2812B_Color("blue");
+    // }
+}
+
+void WS2812B_Color(char *str)
+{
+    // printf("%d\n", strcmp(str, "red"));
+    if (0 == strcmp(str, "red")) {
+        WS2812B_send(0X000500);
+
+        // WS2812B_send(0X008888);
+        // WS2812B_send(0X111100);
+        // WS2812B_send(0X000015);
+
+        // delay_ms(10000);
+        // WS2812B_send(0X000500);
+        // delay_ms(10000);
+        // WS2812B_send(0X000005);
+        // delay_ms(10000);
+        // WS2812B_send(0X000000);
+        // delay_ms(10000);
+
+        // WS2812B_send(0X083405);
+    }
+    if (0 == strcmp(str, "yellow")) {
+        WS2812B_send(0X050500);
+    }
+    if (0 == strcmp(str, "blue")) {
+        WS2812B_send(0X000015);
+    }
+    if (0 == strcmp(str, "purple")) {
+        WS2812B_send(0X001414);
+    }
+}
 void WS2812B_ON(void)
 {
-    WS2812B_send(0XFFFF00);
+    // WS2812B_send(0XFFFF00);
+    // WS2812B_send(0X050500);
+    WS2812B_send(0X000005);
 }
 void WS2812B_Gradient(void)
 {
+
+    WS2812B_Init();
+    while (1) {
+        delay_ms(1200);
+        printf("xxxxxx\n");
+        WS2812B_Color("red");
+    }
+
     uint8_t step = 0;
     // while (1) {
     //     WS2812B_send(step << 8);
@@ -109,7 +177,7 @@ void WS2812B_Gradient(void)
     // }
     while (1) {
         WS2812B_send(step);
-        delay_ms(50);
+        delay_ms(1500);
         step++;
         if (step > 0xFF) step = 0;
     }
