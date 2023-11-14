@@ -24,6 +24,7 @@ target("stm32", function()
     "./src/key",
     "./src/led",
     "./sys",
+    "./sys/rgb",
     "./sys/oledv2",
     "./sys/util",
     "./sys/sr04",

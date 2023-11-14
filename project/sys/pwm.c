@@ -62,6 +62,8 @@ void PWM_Config(int version)
         // 部分重映射, 使能RCC_APB2Periph_AFIO , RCC_APB2Periph_GPIOB
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO | RCC_APB2Periph_GPIOB, ENABLE);
         GPIO_PinRemapConfig(GPIO_PartialRemap_TIM3, ENABLE); // PB4,PB5,PB0,PB1
+        GPIO_PinRemapConfig(GPIO_Remap_SWJ_NoJTRST, ENABLE); // 解决: CH1 PB4 PWM 无效
+
         GPIO_InitTypeDef gpio;
 
         gpio.GPIO_Pin   = PWM_GPIO_Pin_2;

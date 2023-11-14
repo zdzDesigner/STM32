@@ -2,6 +2,7 @@
 #include "delay.h"
 #include "stm32f10x_rcc.h"
 #include "ws2812b.h"
+#include "rgb.h"
 
 #define LIGHT_LEN      1
 #define LIGHT_BYTE_LEN LIGHT_LEN * 24
@@ -97,16 +98,53 @@ void WS2812B_OFF(void)
 {
     WS2812B_send(0X000000);
 }
+
+uint8_t min_conv(uint8_t min, uint8_t max, uint8_t val)
+{
+    uint8_t avg = (min + max) / 2;
+    if (avg > val) return avg - val;
+    return val - avg;
+}
 void WS2812B_Compute(uint8_t hval, uint8_t vval)
 {
 
-    if (hval < 140 && hval > 110 && vval > 110 && vval < 140) {
+    uint8_t min = 100;
+    uint8_t max = 140;
+    if (hval < max && hval > min && vval > min && vval < max) {
         WS2812B_OFF();
         return;
     }
 
+    if (hval < min) {
+        hval = min - hval;
+    } else if (hval > max) {
+        hval = hval - max;
+    } else {
+        hval = min_conv(min, max, hval);
+    }
+
+    if (vval < min) {
+        vval = min - vval;
+    } else if (vval > max) {
+        vval = vval - max;
+    } else {
+        vval = min_conv(min, max, vval);
+    }
+    xyBri_t xyBri;
+    xyBri.x   = hval;
+    xyBri.y   = vval;
+    xyBri.bri = 25;
+    RGB_t rgb = xyBriToRgb(xyBri);
+
+    printf("R = %d\n", rgb.R);
+    printf("G = %d\n", rgb.G);
+    printf("B = %d\n", rgb.B);
+
+    // printf("hval:%d,vval:%d\n", hval, vval);
     // uint32_t val = 0;
-    WS2812B_send((hval << 8) + vval);
+    // printf("%x\n", (hval << 8) + vval);
+    // WS2812B_send((hval << 8) + vval);
+    WS2812B_send((rgb.R << 16) + (rgb.G << 8) + rgb.B);
 
     // if (hval > 140) {
     //     WS2812B_Color("red");

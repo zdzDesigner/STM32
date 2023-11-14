@@ -26,7 +26,7 @@
 
 
 // SPI(NRF24L01)寄存器地址
-//  CONFIG
+//  CONFIG   0b00001000
 // bit0:1接收模式,0发射模式;
 // bit1:1上电 0掉电;
 // bit2:CRC模式; 0八位CRC 1 16位CRC
@@ -67,6 +67,7 @@
 // bit6,1,循环发送上一数据包.0,不循环;
 
 #define CONFIG 0x00          // 配置寄存器地址;
+// #define CONFIG 0x08          // nrf2401 to USB 配置寄存器地址;
 #define EN_AA 0x01           // bit0~5,使能自动应答功能 (自动应答必然启动CRC)对应通道0~5
 #define EN_RXADDR 0x02       // bit0~5,接收数据通道允许,对应通道0~5
 #define SETUP_AW 0x03        // bit1,0:设置地址宽度(所有数据通道) 01,3字节; 10,4字节; 11,5字节;(默认11)

@@ -8,11 +8,12 @@
 #include "pwm.h"
 #include "ws2812b.h"
 #include "spi.h"
+#include "bns/modbus.h"
 #include <stdint.h>
 
 extern uint16_t ADC_VAL[2];
-extern uint8_t  TX_BUF[TX_PLOAD_WIDTH]; // 发射数据缓存
-extern uint8_t  RX_BUF[RX_PLOAD_WIDTH]; // 接收数据缓存
+extern uint8_t TX_BUF[TX_PLOAD_WIDTH]; // 发射数据缓存
+extern uint8_t RX_BUF[RX_PLOAD_WIDTH]; // 接收数据缓存
 
 static uint8_t boot_nrf24()
 {
@@ -60,6 +61,7 @@ static int send()
 
     u16 hval = 0;
     u16 vval = 0;
+    int event = 0;
     while (1) {
         // WS2812B_ON();
         // WS2812B_Color("red");
@@ -71,14 +73,24 @@ static int send()
         hval = scalerH.conv(&scalerH, ADC_VAL[0]);
         vval = scalerV.conv(&scalerV, ADC_VAL[1]);
 
+        if ((20 < hval && hval < 230) && (20 < vval && vval < 230)) {
+            if (event == 1) {
+                printf("[%d,%d]\n", hval, vval);
+                event = 0;
+            }
+            continue;
+        }
+        if (event == 0) event = 1;
+
         // printf("hval:%d,vval:%d\n", ADC_VAL[0], ADC_VAL[1]);
 
-        printf("hval:%d,vval:%d\n", hval, vval);
+        // printf("hval:%d,vval:%d\n", hval, vval);
+        printf("[%d,%d]\n", hval, vval);
         TX_BUF[0] = (uint8_t)hval;
         TX_BUF[1] = (uint8_t)vval;
         // delay_ms(100);
         NRF_Tx_Dat(TX_BUF);
-        WS2812B_Compute((uint8_t)hval, (uint8_t)vval);
+        // WS2812B_Compute((uint8_t)hval, (uint8_t)vval);
 
         // uint8_t NrfStatus = NRF_Tx_Dat(TX_BUF);
         // printf("%s\n", "send ");
@@ -105,8 +117,8 @@ static int receive()
     uint8_t status = boot_nrf24();
     printf("status: %d\n", status);
     // 已初始的变量在常量区
-    char statusstr[]   = "status:x";
-    int  len           = sizeof(statusstr);
+    char statusstr[] = "status:x";
+    int len = sizeof(statusstr);
     statusstr[len - 2] = status + 48;
     OLED_Clear();
     OLED_ShowString(0, 0, statusstr);
@@ -120,11 +132,11 @@ static int receive()
     NRF_RX_Mode(); // NRF 进入接收模式
 
     PWM_Config(1);
-    uint8_t dir       = 0; // 0:h, h:v
-    uint8_t cv        = 125;
-    uint8_t ecv       = 125;
-    Scaler  scalerCV  = ScalerInit(80, 125, 0, 125);
-    Scaler  scalerECV = ScalerInit(20, 80, 0, 125);
+    uint8_t dir = 0; // 0:h, h:v
+    uint8_t cv = 125;
+    uint8_t ecv = 125;
+    Scaler scalerCV = ScalerInit(80, 125, 0, 125);
+    Scaler scalerECV = ScalerInit(20, 80, 0, 125);
 
     uint8_t stop_min = 105;
     uint8_t stop_max = 150;
@@ -201,12 +213,12 @@ static int receive()
         if (hval >= stop_min && hval <= stop_max && vval >= stop_min && vval <= stop_max) {
             hval = 0;
             vval = 0;
-            cv   = 125;
+            cv = 125;
             PWM_Stop();
             OLED_ShowString(0, 5, "STOP");
         }
 
-        cv  = scalerCV.conv(&scalerCV, cv);
+        cv = scalerCV.conv(&scalerCV, cv);
         ecv = scalerCV.conv(&scalerECV, cv) / 20;
 
         // cv = hval;
@@ -225,8 +237,9 @@ static int receive()
 static int receive_demo()
 {
     PWM_Config(2);
-    uint16_t v    = 0;
-    uint8_t  step = 0;
+    // PWM_Config(1);
+    uint16_t v = 0;
+    uint8_t step = 0;
     while (1) {
         // TIM_SetCompare2(TIM3, 125 * 125); // PB1
         delay_ms(20000);
@@ -237,9 +250,12 @@ static int receive_demo()
         // TIM_SetCompare3(TIM3, 0); // PB0
         // TIM_SetCompare4(TIM3, 0); // PB1
 
-        delay_ms(20000);
+        // delay_ms(20000);
         v = 125 * 5 * step;
-        TIM_SetCompare2(TIM3, v); // PB1
+        TIM_SetCompare1(TIM3, v); // PB4
+        TIM_SetCompare2(TIM3, v); // PB5
+        TIM_SetCompare3(TIM3, v); // PB0
+        TIM_SetCompare4(TIM3, v); // PB1
 
         // if (step == 0) {
         //     TIM_SetCompare2(TIM3, 0); // PB5
@@ -273,9 +289,9 @@ static int light(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     // Configure GPIOA Pin 1 as Output push-pull
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     while (1) {
@@ -294,10 +310,11 @@ int main()
 
     delay_init();
     PRINT_Config();
-    LED_GPIO_Config();
-    LED_Open();
+    // LED_GPIO_Config();
+    // LED_Open();
     // WS2812B_Gradient();
 
+    // return modbus();
     return send();
     // return send_demo();
     // return receive();
